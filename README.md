@@ -83,3 +83,4 @@ De seleccionar el canal 'gray', se creará y escribirá un archivo .csv llamado 
 
 
 ## Entrenar el modelo
+La arquitectura de la red neuronal se compone de la siguiente manera:
