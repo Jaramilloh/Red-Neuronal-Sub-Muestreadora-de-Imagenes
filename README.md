@@ -32,14 +32,11 @@ La arquitectura de alto nivel del sistema se representa a continuación; el usua
 ![Planta - Imagen de salida LR](Imagenes_LR/planta_gray_sub-muestreada.png)
 
 ## Ejecutar el modelo pre-entrenado
-Asegúrese de clonar el repositorio y ejecutar los scripts de forma relativa en el directorio raíz
-del repositorio.
-
 Antes de ejecutar el sistema, por favor introduzca las imágenes en alta resolución dentro
 del directorio [Imagenes_HR](Imagenes_HR). El sistema podrá ser ejecutado para sub-muestrear todas las imágenes contenidas en el directorio HR, o, sub-muestrear una sola imagen
 especificada por el usuario a través del nombre del archivo.
 
-Para ejecutar el modelo pre-entrenado, corra el código [validacion_sub-muestreo_imagenes.py](validacion_sub-muestreo_imagenes.py). Se le solicitará al usuario introducir el color del canal o canales a extraer.
+Para ejecutar el modelo pre-entrenado, corra el código [validacion_sub-muestreo_imagenes.py](validacion_sub-muestreo_imagenes.py), ubicado de forma absoluta en la raíz del repositorio. Se le solicitará al usuario introducir el color del canal o canales a extraer.
 
 ```ruby
 channel = input("\nPor favor, introduza el canal a sub-muestrear: 'gray' para escala de grises, 'bgr' para canales de color: ")
@@ -108,6 +105,10 @@ También se solicitará introducir el conjunto de datos a utilizar para cada can
 # Especificar si se quiere entrenar con el conjunto de datos en escala de grises o los conjuntos de datos para los tres canales de color
 channel = input("\nPor favor, introduza los canales de color a ser utilizados como conjunto de datos; 'gray' para escala de grises, 'bgr' para canales de color: ")
 ```
+Si se elige el canal de color en escala de grises, se almacenará el modelo entrenado en [Modelos_guardados/Modelo_gris_guardado](Modelos_guardados/Modelo_gris_guardado). Si se elige los tres canales de color, se guardarán tres modelos entrenados respectivamente en [Modelo_azul_guardado](Modelos_guardados/Modelo_azul_guardado), [Modelo_verde_guardado](Modelos_guardados/Modelo_verde_guardado), [Modelo_rojo_guardado](Modelos_guardados/Modelo_rojo_guardado).
 
+Todo el registro del entrenamiento es guardado en un archivo de texto [bgr_entrenamiento.log](bgr_entrenamiento.log), o [gray_entrenamiento.log](gray_entrenamiento.log), para destacar, acá se encuentra el desempeño de cada modelo entrenado versus épocas y las métricas evaluadas sobre el modelo entrenado. 
+
+Se utilizó la métrica R2 o coeficiente de determinación para evaluar el modelo de regresión entrenado. La ecuación implementada se obtuvó de [Coeficiente de Determinación.](https://en.wikipedia.org/wiki/Coefficient_of_determination)
 
 
