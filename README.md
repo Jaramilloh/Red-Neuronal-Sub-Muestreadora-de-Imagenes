@@ -6,6 +6,19 @@ Este repositorio contiene los códigos para [entrenar](entrenamiento.py) y [vali
 Video: <>
 Artículo: <>
 
+Tabla de Contenidos
+=================
+
+<!--ts-->
+   * [Red Neuronal Sub-Muestreadora de Imágenes](#Red-Neuronal-Sub-Muestreadora-de-Imágenes)
+   * [Table of contents](#tabla-de-contenidos)
+   * [Resultados Obtenidos](#Resultados-Obtenidos)
+   * [Resultados Obtenidos](#Resultados-Obtenidos)
+   * [Ejecutar el modelo pre-entrenado](#Ejecutar-el-modelo-pre-entrenado)
+   * [Generación del conjunto de datos](#Generación-del-conjunto-de-datos)
+   * [Entrenar el modelo](#Entrenar-el-modelo)
+<!--te-->
+
 ### Resultados Obtenidos
 Nuestra red neuronal es capaz de sub-muestrear una imagen de entrada en un factor K = 4, penalizando las frecuencias altas con el fin de evitar efectos de aliasing en la imagen re-muestreada. 
 
@@ -33,6 +46,7 @@ La arquitectura de alto nivel del sistema se representa a continuación; el usua
 
 
 ## Ejecutar el modelo pre-entrenado
+
 Antes de ejecutar el sistema, por favor introduzca las imágenes en alta resolución dentro
 del directorio [Imagenes_HR](Imagenes_HR). El sistema podrá ser ejecutado para sub-muestrear todas las imágenes contenidas en el directorio HR, o, sub-muestrear una sola imagen
 especificada por el usuario a través del nombre del archivo.
