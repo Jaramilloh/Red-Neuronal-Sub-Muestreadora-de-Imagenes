@@ -7,7 +7,7 @@ Video: <>
 Preprint: <>
 
 ### Resultados Obtenidos
-Nuestra red neuronal es capaz de sub-muestrear una imagen penalizando las frecuencias altas con el fin de evitar efectos de aliasing en la imagen re-muestreada. Más adelante se explicará en más detalle el proceso de entrenamiento. La arquitectura de alto nivel se representa a continuación:
+Nuestra red neuronal es capaz de sub-muestrear una imagen penalizando las frecuencias altas con el fin de evitar efectos de aliasing en la imagen re-muestreada, más adelante se explicará en más detalle el proceso de aprendizaje de la red neuronal. La arquitectura de alto nivel del sistema se representa a continuación:
 
 ```mermaid
 graph LR
