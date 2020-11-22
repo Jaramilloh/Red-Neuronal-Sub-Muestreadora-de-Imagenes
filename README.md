@@ -8,3 +8,11 @@ Preprint: <>
 
 ### Salidas Generadas
 ![Imagen 1](resources/teaser.jpg)
+
+Nuestra red neuronal es capaz de sub-muestrear una imagen penalizando las frecuencias altas con el fin de evitar efectos de aliasing en la imagen re-muestreada.
+
+<img src="Imagenes_HR/lenna.png" alt="lenna_HR" width="900"/><br>
+<img src="Imagenes_LR/lenna_sub-muestreada.png" alt="lenna_LR" width="900"/><br>
+
+<img src="Imagenes_HR/planta.png" alt="lenna_HR" width="900"/><br>
+<img src="Imagenes_LR/planta_sub-muestreada.png" alt="lenna_LR" width="900"/><br>
