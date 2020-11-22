@@ -47,10 +47,11 @@ def filtro_gaussian(img, sigmax, sigmay):
 
 def iteraciones_opt(img, gaussian, sfft_img_c1, sfft_img_c2, sfft_img_c3, K):
     '''
-    Esta funcion evalua los 'n' filtros Gaussianos generados (especificados en el
-    numero de iteraciones), al filtrar la imagen especifica, decimarla y escalarla
-    de nuevo a partir de una interpolacion bicubica para calcular un error entre
-    esta y la imagen original sin filtrar y sin decimar.
+    Esta funcion evalua los 'n' filtros Gaussianos especificados en el
+    numero de iteraciones. Se filtrar la imagen especifica, se sub-muestrea
+    esoacialmente y se escala o sobre-muestrea de nuevo a partir de 
+    una interpolacion bicubica para calcular un error medio absoluto 
+    entre esta y la imagen original sin filtrar y sin decimar.
 
     Entradas:
         img: imagen a filtrar
@@ -68,6 +69,7 @@ def iteraciones_opt(img, gaussian, sfft_img_c1, sfft_img_c2, sfft_img_c3, K):
     img_filteredc1=sfft_img_c1*gaussian
     img_filteredc2=sfft_img_c2*gaussian
     img_filteredc3=sfft_img_c3*gaussian
+  
     # InverseFFT shift para descentralizar las frecuencias resultantes, InverseFFT para obtener la imagen filtrada en espacio, Valor absoluto de la señal recibida
     img_fltc1=np.uint8(np.rint((np.abs(np.fft.ifft2(np.fft.ifftshift(img_filteredc1))))))
     img_fltc2=np.uint8(np.rint((np.abs(np.fft.ifft2(np.fft.ifftshift(img_filteredc2))))))
@@ -80,7 +82,7 @@ def iteraciones_opt(img, gaussian, sfft_img_c1, sfft_img_c2, sfft_img_c3, K):
     # Se interpola la imagen decimada
     img_resize = cv2.resize(img_dwn, None, fx=K, fy=K, interpolation = cv2.INTER_CUBIC)
     # Se calcula el error entre la imagen interpolada y la imagen original
-    J = 1/(2*len(img.flat))*(np.sum(np.power(np.subtract(img_resize,img),2)))
+    J = 1/(en(img.flat))*(np.sum(np.subtract(img_resize,img)))
 
     return J, img_dwn
 
@@ -89,6 +91,7 @@ def calculate(func, args):
     #https://docs.python.org/3.8/library/multiprocessing.html#multiprocessing-programming
     Funcion para calcular el resultado de la tarea de cada
     trabajador (subproceso) asignado por multiprocessing.pool
+    Solo se puede en LINUX.
 
     Entradas:
         func: funcion a resolver por el trabajador
@@ -103,8 +106,12 @@ def calculate(func, args):
 def test(img, gaussian, sfft_img_c1, sfft_img_c2, sfft_img_c3, K, Js, img_dwn):
     '''
     #https://docs.python.org/3.8/library/multiprocessing.html#multiprocessing-programming
-    Funcion para evaluar cada filtro Gaussiano generado utilizando
-    multiples nucleos de la CPU, con el fin de optimizar el algoritmo.
+    Funcion para evaluar cada filtro Gaussiano utilizando multiples nucleos de la CPU, 
+    con el fin de optimizar el algoritmo. Se evaluan 'n' filtros Gaussianos de 
+    distintas frecuencias de corte generados para una sola imagen.
+    
+    Cada filtro se evalua a traves del error medio absoluto, el filtro con menor error es el
+    que se utiliza como resultado final del sub-muestreo angular.
 
     Entradas:
         img: imagen a filtrar
