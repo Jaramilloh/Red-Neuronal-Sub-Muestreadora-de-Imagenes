@@ -56,12 +56,30 @@ caso = int(input("Caso: "))
 Los resultados serán almacenados en el directorio [Imagenes_LR](Imagenes_LR). Este repositorio cuenta con dos imágenes de prueba (enseñadas anteriormente) dentro del directorio de imágenes de alta resolución.
 
 ## Generación del conjunto de datos
-La generación del conjunto de datos consiste en dos pasos: sub-muestrear espacialmente las imágenes del conjunto de datos de [Common Objects in Context](https://cocodataset.org/#termsofuse) (*Imágenes pertenecientes a [Flickr](https://www.flickr.com/creativecommons/) con licencia [Creative Commons](https://creativecommons.org/licenses/by/4.0/legalcode)*) y la creación de los conjuntos de datos entrenamiento y validación en formato .csv.
+La generación del conjunto de datos consiste en dos pasos: sub-muestrear espacialmente las imágenes del conjunto de datos de [Common Objects in Context](https://cocodataset.org/#termsofuse) (*Imágenes pertenecientes a [Flickr](https://www.flickr.com/creativecommons/) con licencia [Creative Commons](https://creativecommons.org/licenses/by/4.0/legalcode)*) y la creación de los conjuntos de datos de entrenamiento y validación en formato .csv.
 
 Las imágenes a sub-muestrear se encuentran en el directorio [Dataset/X](Dataset/X) y estas deben estar en formato .png. 
 
-Ejecute el código [decimacion_espacial_linux.py](Dataset/decimacion_espacial_linux.py) o [decimacion_espacial_windows.py](Dataset/decimacion_espacial_windows.py) de acuerdo a su sistema operativo. Los códigos se diferencian en que, en Linux, se aplica multiproceso en 4 núcleos de la CPU para optimizar el proceso de sub-muestreo. 
+Ejecute el código [decimacion_espacial_linux.py](Dataset/decimacion_espacial_linux.py) o [decimacion_espacial_windows.py](Dataset/decimacion_espacial_windows.py) (de acuerdo a su sistema operativo) en la ubicación absoluta [/Dataset/](Dataset). Los códigos se diferencian en que, en Linux, se aplica multiproceso en 4 núcleos de la CPU para optimizar el proceso de sub-muestreo. 
 
+Se le solicitará al usuario introducir el factor K de sub-muestreo.
+También se le solicitará introducir el caso especifico de sub-muesteo.
+```ruby
+K = int(input("\nPor favor, introduzca el factor de sub-muestreo, debe ser divisible entre 2 en la medida de lo posible (se tomara el numero entero del valor introducido): "))
+```
+Además, se solicitará introducir el número de iteraciones o filtros para probar con cada imagen.
+```ruby
+itr = int(input("Por favor, introduzca el numero de iteraciones para optimizar la sub-muestreo de cada imagen (se tomara el numero entero del valor introducido): "))
+```
+Lo anterior con el fin de identificar el filtro con el mínimo error absoluto medio local en el número de iteraciones. El error absoluto medio se calcula a partir de la imagen filtrada y sub-muestreada, que es sobre-muestreada (escalada) por el mismo factor K y es comparada con la imagen original en alta resolución. Se evalúan los 'itr' filtros especificados por el usuario y se elige el mejor almacenando sus resultados.
+
+El código anterior generará los siguientes directorios respectivamente: [Y](Dataset/Y), [Filtros_Gaussianos](Dataset/Filtros_Gaussianos), [Interpolacion_bicubica](Dataset/Interpolacion_bicubica), los cuales almacenarán las imágenes originales sub-muestreadas en los tres canales de color, La función de transferencia, en frecuencia, del filtro implementado en cada imagen, y por último, la escalización a partir de una interpolación bicúbica de las imágenes resultantes en [Y](Dataset/Y), esto último para motivos prácticos de evaluación a desarrollar más adelante en el protocolo de pruebas del sistema.
+
+Una vez el primer paso es ejecutado, se debe realizar el segundo paso: la creación de los conjuntos de datos en formato .csv. Para esto, ejecute el código [crear_dataframe.py](Dataset/crear_dataframe.py) ubicado de forma absoluta en el directorio [/Dataset/](Dataset). Se solicitará al usuario introducir cuál canal de color desea extraer en formato .csv.
+```ruby
+channel = input("\nPor favor, introduza el canal a extraer: 'gray' para escala de grises, 'bgr' para canales de color: ")
+```
+De seleccionar el canal 'gray', se creará y escribirá un archivo .csv llamado [gray_channel.csv](Dataset/gray_channel.csv). Si se seleccionan los tres canales de color RGB, se crearán y escribirán los siguientes archivos: [blue_channel.csv](Dataset/blue_channel.csv), [green_channel.csv](Dataset/green_channel.csv), [red_channel.csv](Dataset/red_channel.csv). Los archivos anteriores son los contenedores del conjunto de datos para entrenar y evaluar a la red neuronal sub-muestreadora de imágenes.
 
 
 ## Entrenar el modelo

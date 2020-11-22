@@ -207,14 +207,12 @@ HR_dirs.sort()
 print ("\nLos directorios que contienen las imagenes HR son : " + str(HR_dirs)) 
 
 # Especificar el factor de sub-muestreo y el numero de iteraciones
-Ki = input("\nPor favor, introduzca el factor de sub-muestreo, debe ser divisible entre 2 en la medida de lo posible (se tomara el numero entero del valor introducido): ")
-K = int(Ki)
+K = int(input("\nPor favor, introduzca el factor de sub-muestreo, debe ser divisible entre 2 en la medida de lo posible (se tomara el numero entero del valor introducido): "))
 if (K <= 0) and (K > 10) and (K%2 != 0):
     print("Numero invalido, se elegirá el valor por defecto K = 4")
     K = 4
 
-itri = input("Por favor, introduzca el numero de iteraciones para optimizar la sub-muestreo de cada imagen (se tomara el numero entero del valor introducido): ")
-itr = int(itri)
+itr = int(input("Por favor, introduzca el numero de iteraciones para optimizar la sub-muestreo de cada imagen (se tomara el numero entero del valor introducido): "))
 if (itr <= 0) and (itr > 300):
     print("Numero invalido, se elegirá el valor por defecto itr = 100")
     itr = 100
