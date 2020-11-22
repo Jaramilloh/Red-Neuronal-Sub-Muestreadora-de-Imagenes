@@ -15,16 +15,45 @@ import shutil
 import time
 import csv
 
+'''
+Pseudo-algoritmo:
+1. Identificar como entrada del usuario cual canal
+se extraera como conjunto de datos: si los tres canales
+de color, o solo el canal en escala de grises.
+2. Identificar los directorios con las muestras, siendo
+las imagenes en alta resolucion y las salidas, siendo 
+las imagenes en baja resolucion. Directorios 'X' y 'Y'
+respectivamente.
+3. Obtener dos listas con los nombres de los archivos HR
+y LR. Se organizan ambas listas en orden alfanumerico
+4. Empezar a recorrer cada imagen HR con su homologa LR:
+    
+    1. Por cada pixel en la imagen LR, extraer una ventana
+    de 4 x 4 pixeles en la imagen HR respectivamente.
 
-if sys.platform == "linux" or sys.platform == "linux2":
-    pth = input("\nPor favor, introduzca la ruta de trabajo absoluta: ")
-    os.chdir(pth)
-else:
-    pth = input("\nPor favor, introduzca la ruta de trabajo absoluta, recuerde cambiar '\\' por '/': ")
-    os.chdir(pth)
+    NOTA: la decimacion espacial introduce efectos de espejo
+    en la primera fila de pixeles en algunas imagenes, esto
+    se debe a que el proceso se realiza en el dominio de
+    la frecuencia y al ser un paso de ida y de vuelta, alguna
+    informacion se pierde.
 
+    Por lo tanto, se filtran las muestras ruidosas, i.e. 
+    aquellas muestras cuyas salidas no se encuentren dentro
+    del rango de sus caracteristicas.
+
+    2. Guardar las 16 caracteristicas de cada muestra con
+    su salida en una fila nueva en un documento .csv 
+    nombrado con el canal de color correspondiente.
+'''
+
+print("\nEl directorio de trabajo es: " + os.getcwd())
 
 channel = input("\nPor favor, introduza el canal a extraer: 'gray' para escala de grises, 'bgr' para canales de color: ")
+# Si se ingreso un canal incorrecto:
+while channel != 'bgr' and channel != 'gray':
+    print("Error: canal no reconocido...")
+    channel = input("\nPor favor, introduza el canal a sub-muestrear: 'gray' para escala de grises, 'bgr' para canales de color: ")
+    #sys.exit()
 
 start_time = time.time()
 
@@ -71,6 +100,8 @@ if len(filelistHR) == len(filelistLR):
                         for col in range(imgLR.shape[1]):
                             Y = np.float32(imgLR[row,col])
                             X = np.float32(imgHR[row*4:row*4+4, col*4:col*4+4].flatten())
+
+                            # Se filtran las muestras ruidosas
                             if np.max(X) >= Y and np.min(X) <= Y:
                                 writer.writerow([X[0], X[1], X[2], X[3], X[4], X[5], X[6], X[7], X[8], X[9], X[10], X[11], X[12], X[13], X[14], X[15], Y])          
                     
@@ -121,7 +152,7 @@ if len(filelistHR) == len(filelistLR):
                         print("---Tiempo de ejecucion: %s segundos ---" % (time.time() - start_time_aux))
                         
                           
-print("---Tiempo de ejecucion: %s segundos ---" % (time.time() - start_time_aux))
+print("---\nTiempo total de ejecucion: %s segundos ---" % (time.time() - start_time_aux))
             
             
 
