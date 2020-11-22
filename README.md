@@ -11,7 +11,7 @@ Tabla de Contenidos
 
 <!--ts-->
    * [Red Neuronal Sub-Muestreadora de Imágenes](#Red-Neuronal-Sub-Muestreadora-de-Imágenes)
-   * [Table of contents](#tabla-de-contenidos)
+   * [Tabla de Contenidos](#tabla-de-contenidos)
    * [Resultados Obtenidos](#Resultados-Obtenidos)
    * [Resultados Obtenidos](#Resultados-Obtenidos)
    * [Ejecutar el modelo pre-entrenado](#Ejecutar-el-modelo-pre-entrenado)
