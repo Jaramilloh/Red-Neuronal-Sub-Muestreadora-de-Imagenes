@@ -264,7 +264,7 @@ for i in range(len(dataframes)):
     print("\nEl modelo entrenado se ha guardado correctamente en: Modelos_guardados/" + nombres[i])
 
 # Se almacena la grafica con el rendimiento del entrenamiento del modelo
-plt.savefig('Modelos_guardados/entrenamiento_canales_de_color.png', bbox_inches='tight')
+plt.savefig(('Modelos_guardados/entrenamiento_'+str(channel)+'.png'), bbox_inches='tight')
 
 # Resumen de la evaluacion de los modelos entrenados
 print("\nCoeficientes de determinacion en cada modelo entrenado:")
