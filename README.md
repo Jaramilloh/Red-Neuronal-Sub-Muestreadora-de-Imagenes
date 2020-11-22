@@ -32,7 +32,13 @@ La arquitectura de alto nivel del sistema se representa a continuación; el usua
 ![Planta - Imagen de salida LR](Imagenes_LR/planta_gray_sub-muestreada.png)
 
 ## Ejecutar el modelo pre-entrenado
+Antes de ejecutar el sistema, por favor introduzca sus imágenes HR dentro
+del directorio [Imagenes_HR](Imagenes_HR). El sistema podrá ser ejecutado para sub-muestrear todas las imágenes contenidas en el directorio HR, o una sola imagen
+especificada por el usuario a través del nombre del archivo.
+
+Para ejecutar el modelo pre-entrenado, corra el código ([validacion_sub-muestreo_imagenes.py](validacion_sub-muestreo_imagenes.py).
 
 ## Generación del conjunto de datos
 
 ## Entrenar el modelo
+
