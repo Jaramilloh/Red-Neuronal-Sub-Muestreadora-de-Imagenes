@@ -5,3 +5,5 @@ Este repositorio contiene los códigos para entrenar y validar la red neuronal, 
 
 Video: link Artículo: link
 
+
+
