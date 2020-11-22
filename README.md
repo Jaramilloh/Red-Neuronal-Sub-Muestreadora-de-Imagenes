@@ -22,7 +22,7 @@ La arquitectura de alto nivel del sistema se representa a continuación; el usua
 ![Lenna - Imagen de salida LR rgb](Imagenes_LR/lenna_bgr_sub-muestreada.png)
 ![Lenna - Imagen de salida LR gris](Imagenes_LR/lenna_gray_sub-muestreada.png)
 
-#### **Imagen de entrada HR**
+**Imagen de entrada HR**
 
 ![Planta - Imagen de entrada HR](Imagenes_HR/planta.png)
 
