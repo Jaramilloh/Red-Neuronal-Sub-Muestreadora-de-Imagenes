@@ -12,10 +12,15 @@ Nuestra red neuronal es capaz de sub-muestrear una imagen en un factor K = 4, pe
 
 ![arquitectura alto nivel](Modelos_guardados/arquitectura_alto_nivel_sistema.png)
 
+**Imagen de entrada HR**
 ![Lenna - Imagen de entrada HR](Imagenes_HR/lenna.png)
+
+**Imagen de salida LR en RGB o escala de grises**
 ![Lenna - Imagen de salida LR rgb](Imagenes_LR/lenna_bgr_sub-muestreada.png)
 ![Lenna - Imagen de salida LR gris](Imagenes_LR/lenna_gray_sub-muestreada.png)
 
+**Imagen de entrada HR**
 ![Planta - Imagen de entrada HR](Imagenes_HR/planta.png)
+**Imagen de salida LR en RGB o escala de grises**
 ![Planta - Imagen de salida LR](Imagenes_LR/planta_bgr_sub-muestreada.png)
 ![Planta - Imagen de salida LR](Imagenes_LR/planta_gray_sub-muestreada.png)
