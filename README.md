@@ -84,7 +84,7 @@ El código anterior generará los siguientes directorios respectivamente: [Y](Da
 
 ![Imagen HR](Dataset/X/000000000009.png)
 
-**Filtro Gaussiano almacenado en [Filtros_Gaussianos](Dataset/Filtros_Gaussianos)**
+**Filtro Gaussiano almacenado en [Filtros_Gaussianos](Dataset/Filtros_Gaussianos) aplicado sobre la imagen anterior**
 
 ![Filtro Gaussiano](Dataset/Filtros_Gaussianos/flt_gaussian_000000000009.png)
 
@@ -103,6 +103,16 @@ channel = input("\nPor favor, introduza el canal a extraer: 'gray' para escala d
 ```
 
 De seleccionar el canal 'gray', se creará y escribirá un archivo .csv llamado [gray_channel.csv](Dataset/gray_channel.csv). Si se seleccionan los tres canales de color RGB, se crearán y escribirán los siguientes archivos: [blue_channel.csv](Dataset/blue_channel.csv), [green_channel.csv](Dataset/green_channel.csv), [red_channel.csv](Dataset/red_channel.csv). Los archivos anteriores son los contenedores del conjunto de datos para entrenar y evaluar a la red neuronal sub-muestreadora de imágenes.
+
+    NOTA: la decimacion espacial introduce efectos de espejo en la primera fila de pixeles en algunas imagenes, esto se debe a que el proceso se realiza en el dominio de la frecuencia y es necesario centralizar
+    las frecuencias bajas aplicando una dft shift para poder operar la imagen con el filtro en frecuencia, y realizar el proceso inverso. Por dimensiones pares de las imágenes, se presentan estos efectos en los bordes.
+    Por lo tanto, se filtran las muestras ruidosas, i.e. aquellas muestras cuyas salidas no se encuentren dentro del rango de sus caracteristicas.
+
+    ```python
+    # Se filtran las muestras ruidosas
+    if np.max(X) >= Y and np.min(X) <= Y:
+        writer.writerow([X[0], X[1], X[2], X[3], X[4], X[5], X[6], X[7], X[8], X[9], X[10], X[11], X[12], X[13], X[14], X[15], Y]) 
+    ```
 
 **5 primeras muestras en el conjunto de datos [blue_channel.csv](Dataset/blue_channel.csv)**
 
