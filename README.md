@@ -32,13 +32,36 @@ La arquitectura de alto nivel del sistema se representa a continuación; el usua
 ![Planta - Imagen de salida LR](Imagenes_LR/planta_gray_sub-muestreada.png)
 
 ## Ejecutar el modelo pre-entrenado
-Antes de ejecutar el sistema, por favor introduzca sus imágenes HR dentro
-del directorio [Imagenes_HR](Imagenes_HR). El sistema podrá ser ejecutado para sub-muestrear todas las imágenes contenidas en el directorio HR, o una sola imagen
+Asegúrese de clonar el repositorio y ejecutar los scripts de forma relativa en el directorio raíz
+del repositorio.
+
+Antes de ejecutar el sistema, por favor introduzca las imágenes en alta resolución dentro
+del directorio [Imagenes_HR](Imagenes_HR). El sistema podrá ser ejecutado para sub-muestrear todas las imágenes contenidas en el directorio HR, o, sub-muestrear una sola imagen
 especificada por el usuario a través del nombre del archivo.
 
-Para ejecutar el modelo pre-entrenado, corra el código ([validacion_sub-muestreo_imagenes.py](validacion_sub-muestreo_imagenes.py).
+Para ejecutar el modelo pre-entrenado, corra el código [validacion_sub-muestreo_imagenes.py](validacion_sub-muestreo_imagenes.py). Se le solicitará al usuario introducir el color del canal o canales a extraer.
+
+```ruby
+channel = input("\nPor favor, introduza el canal a sub-muestrear: 'gray' para escala de grises, 'bgr' para canales de color: ")
+```
+
+También se le solicitará introducir el caso especifico de sub-muesteo.
+```ruby
+print("\nPor favor, seleccione el caso adecuado:")
+print("1. Se sub-muestrearan todas las imagenes dentro del directorio Imagenes_HR")
+print("2. Se sub-muestreara una imagen especifica en el directorio Imagenes_HR")
+caso = int(input("Caso: "))
+```
+
+Los resultados serán almacenados en el directorio [Imagenes_LR](Imagenes_LR). Este repositorio cuenta con dos imágenes de prueba (enseñadas anteriormente) dentro del directorio de imágenes de alta resolución.
 
 ## Generación del conjunto de datos
+La generación del conjunto de datos consiste en dos pasos: sub-muestrear espacialmente las imágenes del conjunto de datos de [Common Objects in Context](https://cocodataset.org/#termsofuse) (*Imágenes pertenecientes a [Flickr](https://www.flickr.com/creativecommons/) con licencia [Creative Commons](https://creativecommons.org/licenses/by/4.0/legalcode)*) y la creación de los conjuntos de datos entrenamiento y validación en formato .csv.
+
+Las imágenes a sub-muestrear se encuentran en el directorio [Dataset/X](Dataset/X) y estas deben estar en formato .png. 
+
+Ejecute el código [decimacion_espacial_linux.py](Dataset/decimacion_espacial_linux.py) o [decimacion_espacial_windows.py](Dataset/decimacion_espacial_windows.py) de acuerdo a su sistema operativo. Los códigos se diferencian en que, en Linux, se aplica multiproceso en 4 núcleos de la CPU para optimizar el proceso de sub-muestreo. 
+
+
 
 ## Entrenar el modelo
-
