@@ -105,10 +105,20 @@ También se solicitará introducir el conjunto de datos a utilizar para cada can
 # Especificar si se quiere entrenar con el conjunto de datos en escala de grises o los conjuntos de datos para los tres canales de color
 channel = input("\nPor favor, introduza los canales de color a ser utilizados como conjunto de datos; 'gray' para escala de grises, 'bgr' para canales de color: ")
 ```
-Si se elige el canal de color en escala de grises, se almacenará el modelo entrenado en [Modelos_guardados/Modelo_gris_guardado](Modelos_guardados/Modelo_gris_guardado). Si se elige los tres canales de color, se guardarán tres modelos entrenados respectivamente en [Modelo_azul_guardado](Modelos_guardados/Modelo_azul_guardado), [Modelo_verde_guardado](Modelos_guardados/Modelo_verde_guardado), [Modelo_rojo_guardado](Modelos_guardados/Modelo_rojo_guardado).
+Si se elige el canal de color en escala de grises, se almacenará el modelo entrenado en [Modelos_guardados/Modelo_gris_guardado](Modelos_guardados/Modelo_gris_guardado). Si se elige los tres canales de color, se guardarán tres modelos entrenados respectivamente en [Modelos_guardados/Modelo_azul_guardado](Modelos_guardados/Modelo_azul_guardado), [Modelos_guardados/Modelo_verde_guardado](Modelos_guardados/Modelo_verde_guardado), [Modelos_guardados/Modelo_rojo_guardado](Modelos_guardados/Modelo_rojo_guardado).
 
 Todo el registro del entrenamiento es guardado en un archivo de texto [bgr_entrenamiento.log](bgr_entrenamiento.log), o [gray_entrenamiento.log](gray_entrenamiento.log), para destacar, acá se encuentra el desempeño de cada modelo entrenado versus épocas y las métricas evaluadas sobre el modelo entrenado. 
 
 Se utilizó la métrica R2 o coeficiente de determinación para evaluar el modelo de regresión entrenado. La ecuación implementada se obtuvó de [Coeficiente de Determinación.](https://en.wikipedia.org/wiki/Coefficient_of_determination)
 
+```ruby
+Coeficientes de determinacion en cada modelo entrenado:
+Para blue_channel.csv, R2 = 0.986496 
+Para green_channel.csv, R2 = 0.983607 
+Para red_channel.csv, R2 = 0.984299 
+Para gray_channel.csv, R2 = 0.983838 
+```
 
+También se genera y almacena una gráfica en [Modelos_guardados/entrenamiento_gray.png](Modelos_guardados/entrenamiento_gray.png), [Modelos_guardados/entrenamiento_bgr.png](Modelos_guardados/entrenamiento_bgr.png), que muestran el desempeño de cada red entrenada versus las épocas o número de veces en los que se repiten los datos
+![rendimiento entrenamiento canal gray](Modelos_guardados/entrenamiento_gray.png)
+![rendimiento entrenamiento canal bgr](Modelos_guardados/entrenamiento_bgr.png)
