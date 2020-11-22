@@ -84,3 +84,30 @@ De seleccionar el canal 'gray', se creará y escribirá un archivo .csv llamado 
 
 ## Entrenar el modelo
 La arquitectura de la red neuronal se compone de la siguiente manera:
+![arquitectura red neuronal](Modelos_guardados/modelo.png)
+
+Cada muestra tiene 16 caracteríticas, las cuales se no-linealizan con el cuadrado de estas mismas y la multiplicación entre estas, obteniendo un total de 48 características de entrada en la red. 
+Después de la capa de entrada, tiene una capa para normalizar las muestras de entrada a partir de una normalización con media y desviación estándar del conjunto de datos de entrenamiento.
+
+La red neuronal tiene una sola capa interna de 16 neuronas activados a partir de una funcion 'relu' y una sola neurona en la capa de salida, ademas, la funcion de perdida de cada perceptron estará regularizada por una norma L2 y una norma L1 (ElasticNet) en un factor alfa l1 y l2 dado por el usuario, esto con el fin de actualizar los pesos en cantidades menores para hacer la red mas robusta al ruido local en el conjunto de datos no-linealizado.
+
+Antes de entrenar el modelo, asegúrese de haber ejecutado los códigos anteriores para la generación del conjunto de datos y la obtención de los archivos  [gray_channel.csv](Dataset/gray_channel.csv), [blue_channel.csv](Dataset/blue_channel.csv), [green_channel.csv](Dataset/green_channel.csv), [red_channel.csv](Dataset/red_channel.csv).
+
+Para entrenar al modelo, ejecute el código [entrenamiento.py](entrenamiento.py) ubicado de forma absoluta en la raíz del repositorio. Se solicitará al usuario ingresar los hiper parámetros para compilar y entrenar la red neuronal.
+```ruby
+# Ingresar los hiper parametros para el entrenamiento de la red neuronal:
+# Algunos hiper-parametros sugeridos se afinaron de acuerdo a https://www.tensorflow.org/tutorials/keras/keras_tuner
+alfa_train = float(input("\nPor favor, ingrese el valor inicial del factor de aprendizaje (0.01 es el valor optimo determinado por el afinador de hiper-parametros): "))
+alfa_reg_l1 = float(input("\nPor favor, ingrese el valor el factor de regularizacion l1 (1e-7 es el valor optimo determinado por el afinador de hiper-parametros): "))
+alfa_reg_l2 = float(input("\nPor favor, ingrese el valor el factor de regularizacion l2: (1e-5 es el valor optimo determinado por el afinador de hiper-parametros) "))
+batch_sz = int(input("\nPor favor, ingrese el numero de datos por cada lote de entrenamiento: "))
+epchs = int(input("\nPor favor, ingrese el numero epochs (repeticiones por cada muestra): "))
+```
+También se solicitará introducir el conjunto de datos a utilizar para cada canal de color respectivamente. Para cada canal de color, se almacenará el modelo entrenado en [Modelos_guardados](Modelos_guardados)
+```ruby
+# Especificar si se quiere entrenar con el conjunto de datos en escala de grises o los conjuntos de datos para los tres canales de color
+channel = input("\nPor favor, introduza los canales de color a ser utilizados como conjunto de datos; 'gray' para escala de grises, 'bgr' para canales de color: ")
+```
+
+
+
