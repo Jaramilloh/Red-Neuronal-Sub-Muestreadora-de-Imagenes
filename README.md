@@ -4,7 +4,7 @@ Este repositorio contiene el código fuente y los materiales para el proyecto de
 Este repositorio contiene los códigos para entrenar y validar la red neuronal, además de los códigos para la generación del conjunto de datos a partir de los recursos disponibles en [Common Objects in Context](https://cocodataset.org/#termsofuse) (*Imágenes pertenecientes a [Flickr](https://www.flickr.com/creativecommons/) con licencia [Creative Commons](https://creativecommons.org/licenses/by/4.0/legalcode)*). También se encuentra un modelo pre-entrenado para cada canal de color o para escala de grises. El video y el artículo se pueden encontrar acá:
 
 Video: <>
-Articulo: <>
+Artículo: <>
 
 ### Resultados Obtenidos
 Nuestra red neuronal es capaz de sub-muestrear una imagen de entrada en un factor K = 4, penalizando las frecuencias altas con el fin de evitar efectos de aliasing en la imagen re-muestreada. 
@@ -32,5 +32,7 @@ La arquitectura de alto nivel del sistema se representa a continuación; el usua
 ![Planta - Imagen de salida LR](Imagenes_LR/planta_gray_sub-muestreada.png)
 
 ## Ejecutar el modelo pre-entrenado
+
+## Generación del conjunto de datos
 
 ## Entrenar el modelo
