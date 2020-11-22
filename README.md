@@ -79,16 +79,21 @@ Lo anterior con el fin de identificar el filtro con el mínimo error absoluto me
 
 El código anterior generará los siguientes directorios respectivamente: [Y](Dataset/Y), [Filtros_Gaussianos](Dataset/Filtros_Gaussianos), [Interpolacion_bicubica](Dataset/Interpolacion_bicubica), los cuales almacenarán las imágenes originales sub-muestreadas en los tres canales de color, La función de transferencia, en frecuencia, del filtro implementado en cada imagen, y por último, la escalización a partir de una interpolación bicúbica de las imágenes resultantes en [Y](Dataset/Y), esto último para motivos prácticos de evaluación a desarrollar más adelante en el protocolo de pruebas del sistema.
 
+
 **Imagen contenida dentro [X](Dataset/X)**
+
 ![Imagen HR](Dataset/X/000000000009.png)
 
 **Filtro Gaussiano almacenado en [Filtros_Gaussianos](Dataset/Filtros_Gaussianos)**
+
 ![Filtro Gaussiano](Dataset/Filtros_Gaussianos/flt_gaussian_000000000009.png)
 
 **Imagen sub-muestreada almacenada en [Y](Dataset/Y)**
+
 ![Imagen LR](Dataset/Y/LR_000000000009.png)
 
 **Imagen sub-muestreada pero sobre-muestreada en el mismo factor, almacenada en [Interpolacion_bicubica](Dataset/Dataset/Interpolacion_bicubica)**
+
 ![Imagen LR](Dataset/Interpolacion_bicubica/bicHR_000000000009.png)
 
 Una vez el primer paso es ejecutado, se debe realizar el segundo paso: la creación de los conjuntos de datos en formato .csv. Para esto, ejecute el código [crear_dataframe.py](Dataset/crear_dataframe.py) ubicado de forma absoluta en el directorio [/Dataset/](Dataset). Se solicitará al usuario introducir cuál canal de color desea extraer en formato .csv.
@@ -100,6 +105,7 @@ channel = input("\nPor favor, introduza el canal a extraer: 'gray' para escala d
 De seleccionar el canal 'gray', se creará y escribirá un archivo .csv llamado [gray_channel.csv](Dataset/gray_channel.csv). Si se seleccionan los tres canales de color RGB, se crearán y escribirán los siguientes archivos: [blue_channel.csv](Dataset/blue_channel.csv), [green_channel.csv](Dataset/green_channel.csv), [red_channel.csv](Dataset/red_channel.csv). Los archivos anteriores son los contenedores del conjunto de datos para entrenar y evaluar a la red neuronal sub-muestreadora de imágenes.
 
 **5 primeras muestras en el conjunto de datos [blue_channel.csv](Dataset/blue_channel.csv)**
+
 ```
 X1,X2,X3,X4,X5,X6,X7,X8,X9,X10,X11,X12,X13,X14,X15,X16,Y
 153.0,153.0,150.0,149.0,151.0,151.0,152.0,153.0,155.0,153.0,155.0,157.0,154.0,154.0,158.0,162.0,149.0
@@ -155,5 +161,7 @@ Para gray_channel.csv, R2 = 0.983838
 ```
 
 También se genera y almacena una gráfica en [Modelos_guardados/entrenamiento_gray.png](Modelos_guardados/entrenamiento_gray.png), [Modelos_guardados/entrenamiento_bgr.png](Modelos_guardados/entrenamiento_bgr.png), que muestran el desempeño de cada modelo versus las épocas en las que se entrenó. El error es el [error absoluto medio](https://en.wikipedia.org/wiki/Mean_absolute_error). 
+
 ![rendimiento entrenamiento canal gray](Modelos_guardados/entrenamiento_gray.png)
+
 ![rendimiento entrenamiento canal bgr](Modelos_guardados/entrenamiento_bgr.png)
