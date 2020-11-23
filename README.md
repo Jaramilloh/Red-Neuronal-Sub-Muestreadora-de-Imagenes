@@ -190,9 +190,9 @@ También se genera y almacena una gráfica en [Modelos_guardados/entrenamiento_g
 
 ### Referencias
 
-[1] Conjunto de datos del año 2017 - Common Objects in Context. Disponible en https://cocodataset.org/
+[1] Licencia del conjunto de datos del año 2017 - Common Objects in Context. Disponible en https://cocodataset.org/#termsofuse
 
-[2] Flickr. Disponible en https://www.flickr.com/explore
+[2] Licencia de uso de imágenes de Flickr. Disponible en https://www.flickr.com/creativecommons/
 
 [3] Licencia Creative Commons. Disponible en https://creativecommons.org/licenses/by/4.0/legalcode
 
