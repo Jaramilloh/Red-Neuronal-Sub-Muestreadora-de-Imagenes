@@ -26,22 +26,18 @@ La arquitectura de alto nivel del sistema se representa a continuación; el usua
 
 ![arquitectura alto nivel](Modelos_guardados/arquitectura_alto_nivel_sistema.png)
 
-**Imagen de entrada HR**
+**Imagen de entrada HR (*tomada de [4]*)**
 
 ![Lenna - Imagen de entrada HR](Imagenes_HR/lenna.png)
-
-*Imagen tomada de [4]*
 
 **Imagen de salida LR en RGB o escala de grises**
 
 ![Lenna - Imagen de salida LR rgb](Imagenes_LR/lenna_bgr_sub-muestreada.png)
 ![Lenna - Imagen de salida LR gris](Imagenes_LR/lenna_gray_sub-muestreada.png)
 
-**Imagen de entrada HR**
+**Imagen de entrada HR (*tomada de [5]*)**
 
 ![Planta - Imagen de entrada HR](Imagenes_HR/planta.png)
-
-*Imagen tomada de [5]*
 
 **Imagen de salida LR en RGB o escala de grises**
 
@@ -97,11 +93,9 @@ Lo anterior con el fin de identificar el filtro con el mínimo error absoluto me
 El código anterior generará los siguientes directorios respectivamente: [Y](Dataset/Y), [Filtros_Gaussianos](Dataset/Filtros_Gaussianos), [Interpolacion_bicubica](Dataset/Interpolacion_bicubica), los cuales almacenarán las imágenes originales sub-muestreadas en los tres canales de color, La función de transferencia, en frecuencia, del filtro implementado en cada imagen, y por último, la escalización a partir de una interpolación bicúbica de las imágenes resultantes en [Y](Dataset/Y), esto último para motivos prácticos de evaluación a desarrollar más adelante en el protocolo de pruebas del sistema.
 
 
-**Imagen contenida dentro [X](Dataset/X)**
+**Imagen contenida dentro [X](Dataset/X) (*tomada de [1]*)**
 
 ![Imagen HR](Dataset/X/000000000009.png)
-
-*Imagen tomada de [1]*
 
 **Filtro Gaussiano almacenado en [Filtros_Gaussianos](Dataset/Filtros_Gaussianos) aplicado sobre la imagen anterior**
 
