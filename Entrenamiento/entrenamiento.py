@@ -103,6 +103,7 @@ while channel != 'bgr' and channel != 'gray':
 old_stdout = sys.stdout
 log_file = open((str(channel)+"_entrenamiento.log"),"w")
 sys.stdout = log_file
+
 print("\nLos hiper-parametros para entrenar los modelos son:")
 print("Factor de aprendizaje: %f " % (alfa_train))
 print("Factor de regularizacion L1: %f " % (alfa_reg_l1))
@@ -198,7 +199,7 @@ for i in range(len(dataframes)):
     # Cuando esto suceda, se retornan los parámetros con menor perdida:
     #https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping
     callback = tf.keras.callbacks.EarlyStopping(
-        monitor='loss', min_delta=0.0001, patience=8, verbose=0, mode='min',
+        monitor='val_loss', min_delta=0.001, patience=8, verbose=0, mode='min',
         baseline=None, restore_best_weights=True
     )
 
@@ -264,7 +265,7 @@ for i in range(len(dataframes)):
     print("\nEl modelo entrenado se ha guardado correctamente en: Modelos_guardados/" + nombres[i])
 
 # Se almacena la grafica con el rendimiento del entrenamiento del modelo
-plt.savefig(('Modelos_guardados/entrenamiento_'+str(channel)+'.png'), bbox_inches='tight')
+plt.savefig(('Modelos_guardados//entrenamiento_'+str(channel)+'.png'), bbox_inches='tight')
 
 # Resumen de la evaluacion de los modelos entrenados
 print("\nCoeficientes de determinacion en cada modelo entrenado:")
@@ -272,5 +273,6 @@ for i in range(len(dataframes)):
     print("Para %s, R2 = %f " % (dataframes[i], r2_metrics[i]))
 
 print("---Tiempo total de ejecucion del algoritmo de entrenamiento: %s segundos ---" % (time.time() - start_time))
+
 sys.stdout = old_stdout
 log_file.close()
