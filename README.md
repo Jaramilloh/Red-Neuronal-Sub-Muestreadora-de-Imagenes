@@ -13,7 +13,6 @@ Tabla de Contenidos
    * [Red Neuronal Sub-Muestreadora de Imágenes](#Red-Neuronal-Sub-Muestreadora-de-Imágenes)
    * [Tabla de Contenidos](#tabla-de-contenidos)
    * [Resultados Obtenidos](#Resultados-Obtenidos)
-   * [Resultados Obtenidos](#Resultados-Obtenidos)
    * [Ejecutar el modelo pre-entrenado](#Ejecutar-el-modelo-pre-entrenado)
    * [Generación del conjunto de datos](#Generación-del-conjunto-de-datos)
    * [Entrenar el modelo](#Entrenar-el-modelo)
