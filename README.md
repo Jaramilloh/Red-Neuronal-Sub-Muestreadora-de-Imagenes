@@ -1,7 +1,7 @@
 # Red Neuronal Sub-Muestreadora de Imágenes
 Este repositorio contiene el código fuente y los materiales para el proyecto de la Red Neuronal Sub-Muestreadora de Imágenes, desarrollado en la asignatura de enfásis "Inteligencia Artificial" en el programa de Ingeniería Electrónica de la Pontificia Universidad Javeriana. ***Autores: Juan Felipe Jaramillo Hernández, María Fernanda Hernández Baena, Jose David Cifuentes Semanate.***
 
-Este repositorio contiene los códigos para [entrenar](entrenamiento.py) y [validar](validacion_sub-muestreo_imagenes.py) la red neuronal, además de los códigos para la [generación](Dataset/) del [conjunto de datos](Dataset/crear_dataframe.py) a partir de los recursos disponibles en [Common Objects in Context](https://cocodataset.org/#termsofuse) [1] (*Imágenes pertenecientes a [Flickr](https://www.flickr.com/creativecommons/) con licencia [Creative Commons](https://creativecommons.org/licenses/by/4.0/legalcode)*). También se encuentra un modelo pre-entrenado para cada canal de color o para escala de grises. El video y el artículo se pueden encontrar acá:
+Este repositorio contiene los códigos para [entrenar](entrenamiento.py) y [validar](validacion_sub-muestreo_imagenes.py) la red neuronal, además de los códigos para la [generación](Dataset/) del [conjunto de datos](Dataset/crear_dataframe.py) a partir de los recursos disponibles en [Common Objects in Context](https://cocodataset.org/#termsofuse) [1] (*Imágenes pertenecientes a [Flickr](https://www.flickr.com/creativecommons/) [2] con licencia [Creative Commons](https://creativecommons.org/licenses/by/4.0/legalcode) [3]*). También se encuentra un modelo pre-entrenado para cada canal de color o para escala de grises. El video y el artículo se pueden encontrar acá:
 
 Video: <>
 Artículo: <>
@@ -31,6 +31,8 @@ La arquitectura de alto nivel del sistema se representa a continuación; el usua
 
 ![Lenna - Imagen de entrada HR](Imagenes_HR/lenna.png)
 
+*Imagen tomada de [4]*
+
 **Imagen de salida LR en RGB o escala de grises**
 
 ![Lenna - Imagen de salida LR rgb](Imagenes_LR/lenna_bgr_sub-muestreada.png)
@@ -39,6 +41,8 @@ La arquitectura de alto nivel del sistema se representa a continuación; el usua
 **Imagen de entrada HR**
 
 ![Planta - Imagen de entrada HR](Imagenes_HR/planta.png)
+
+*Imagen tomada de [5]*
 
 **Imagen de salida LR en RGB o escala de grises**
 
@@ -98,6 +102,8 @@ El código anterior generará los siguientes directorios respectivamente: [Y](Da
 **Imagen contenida dentro [X](Dataset/X)**
 
 ![Imagen HR](Dataset/X/000000000009.png)
+
+*Imagen tomada de [1]*
 
 **Filtro Gaussiano almacenado en [Filtros_Gaussianos](Dataset/Filtros_Gaussianos) aplicado sobre la imagen anterior**
 
@@ -191,3 +197,13 @@ También se genera y almacena una gráfica en [Modelos_guardados/entrenamiento_g
 ![rendimiento entrenamiento canal bgr](Modelos_guardados/entrenamiento_bgr.png)
 
 ### Referencias
+
+[1] Conjunto de datos del año 2017 - Common Objects in Context. Disponible en https://cocodataset.org/
+
+[2] Flickr. Disponible en https://www.flickr.com/explore
+
+[3] Licencia Creative Commons. Disponible en https://creativecommons.org/licenses/by/4.0/legalcode
+
+[4] Lenna, imagen de prueba. Disponible en https://en.wikipedia.org/wiki/Lenna
+ 
+[5] Conjunto de datos de Campos de Luz, Universidad de Stanford. Disponible en http://lightfield.stanford.edu/lfs.html
