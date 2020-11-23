@@ -64,6 +64,7 @@ elif caso == 2:
         print("El archivo no existe dentro del directorio Imagenes_HR, por favor, ingrese un archivo valido:")
         file_name = input("\nPor favor, ingrese el nombre de la imagen a sub-muestrear junto a su formato (png, jpg): ")
 
+
 for fl in filelist:
     
     start_time_aux = time.time()
@@ -116,6 +117,13 @@ for fl in filelist:
     # Se recorre cada modelo especifico para procesar el canal especifico
     for i in range(len(nombres)):
 
+        # Se carga el modelo entrenado para el canal de color especifico
+        print("Cargando el modelo entrenado: " + str(nombres[i]) + '...')
+        new_model = tf.keras.models.load_model(('Entrenamiento/Modelos_guardados/'+ nombres[i]))
+
+        # Se chequea la arquitectura de la red neuronal
+        #print(new_model.summary())
+  
         print("Procesando el canal " + str(color[i]))
 
         # Se extrae la matriz de imagen del canal de color actual
@@ -123,32 +131,36 @@ for fl in filelist:
             canal = img[:,:]
         else:
             canal = img[:,:,i]
+
+
+        y_completo = []
         # Se extraen ventanas de 4x4 pixeles y se almacenan como vectores de 16 caracteristicas
-        x = []
         for row in range(int(h/4)):
             for col in range(int(w/4)):
+                x = []
                 x.append(np.float32(canal[row*4:row*4+4, col*4:col*4+4].flatten()))
-        # Se crea un np.array a partir de la informacion extraida anteriormente
-        X = np.array(x)
-        # Normalizacion de las muestras del conjunto de datos de la imagen a sub-muestrear     
-        X = min_max_norm(X)
-        # No-linealizacion del conjunto de datos
-        X_aux = X.copy()
-        for j in range(X_aux.shape[1]):
-            X = np.column_stack((X, (X_aux[:,j]*X_aux[:,j])))
-        for j in range(X_aux.shape[1]):
-            X = np.column_stack((X, (X_aux[:,-j-1]*X_aux[:,-j+1]*X_aux[:,-j])))
 
-        #print(X.shape)
-        # Se carga el modelo entrenado para el canal de color especifico
-        print("Cargando el modelo entrenado: " + str(nombres[i]) + '...')
-        new_model = tf.keras.models.load_model(('Modelos_guardados/'+ nombres[i]))
-        # Se chequea la arquitectura de la red neuronal
-        #print(new_model.summary())
+                # Se crea un np.array a partir de la informacion extraida anteriormente
+                X = np.array(x)
 
-        # Se realizan las predicciones a partir de los datos de entrada
-        predictions = new_model.predict(X)
-        imgLR[:,:,i] = np.uint8(predictions.reshape(int(h/4), int(w/4)))
+                # Normalizacion de las muestras del conjunto de datos de la imagen a sub-muestrear     
+                #X = min_max_norm(X)
+
+                # No-linealizacion del conjunto de datos
+                X_aux = X.copy()
+                for j in range(X_aux.shape[1]):
+                    X = np.column_stack((X, (X_aux[:,j]*X_aux[:,j])))
+                for j in range(X_aux.shape[1]):
+                    X = np.column_stack((X, (X_aux[:,-j-1]*X_aux[:,-j+1]*X_aux[:,-j])))
+
+                #print(X.shape)
+                
+                # Se realizan las predicciones a partir de los datos de entrada
+                y_pred = new_model.predict(X)
+                y_completo.append(y_pred)
+
+        y_aux = np.array(y_completo).flatten()             
+        imgLR[:,:,i] = np.uint8(y_aux.reshape(int(h/4), int(w/4)))
 
     cv2.imwrite(('Imagenes_LR/'+fl[:-4] + '_' + str(channel) + '_sub-muestreada.png') ,imgLR)
     print("La imagen %s ha sido sub-muestreada exitosamente..." % (fl))
