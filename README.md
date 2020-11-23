@@ -1,7 +1,7 @@
 # Red Neuronal Sub-Muestreadora de Imágenes
 Este repositorio contiene el código fuente y los materiales para el proyecto de la Red Neuronal Sub-Muestreadora de Imágenes, desarrollado en la asignatura de enfásis "Inteligencia Artificial" en el programa de Ingeniería Electrónica de la Pontificia Universidad Javeriana. ***Autores: Juan Felipe Jaramillo Hernández, María Fernanda Hernández Baena, Jose David Cifuentes Semanate.***
 
-Este repositorio contiene los códigos para [entrenar](entrenamiento.py) y [validar](validacion_sub-muestreo_imagenes.py) la red neuronal, además de los códigos para la [generación](Dataset/) del [conjunto de datos](Dataset/crear_dataframe.py) a partir de los recursos disponibles en [Common Objects in Context](https://cocodataset.org/#termsofuse) (*Imágenes pertenecientes a [Flickr](https://www.flickr.com/creativecommons/) con licencia [Creative Commons](https://creativecommons.org/licenses/by/4.0/legalcode)*). También se encuentra un modelo pre-entrenado para cada canal de color o para escala de grises. El video y el artículo se pueden encontrar acá:
+Este repositorio contiene los códigos para [entrenar](entrenamiento.py) y [validar](validacion_sub-muestreo_imagenes.py) la red neuronal, además de los códigos para la [generación](Dataset/) del [conjunto de datos](Dataset/crear_dataframe.py) a partir de los recursos disponibles en [Common Objects in Context](https://cocodataset.org/#termsofuse) [1] (*Imágenes pertenecientes a [Flickr](https://www.flickr.com/creativecommons/) con licencia [Creative Commons](https://creativecommons.org/licenses/by/4.0/legalcode)*). También se encuentra un modelo pre-entrenado para cada canal de color o para escala de grises. El video y el artículo se pueden encontrar acá:
 
 Video: <>
 Artículo: <>
@@ -17,6 +17,7 @@ Tabla de Contenidos
    * [Ejecutar el modelo pre-entrenado](#Ejecutar-el-modelo-pre-entrenado)
    * [Generación del conjunto de datos](#Generación-del-conjunto-de-datos)
    * [Entrenar el modelo](#Entrenar-el-modelo)
+   * [Referencias](#Referencias)
 <!--te-->
 
 ### Resultados Obtenidos
@@ -188,3 +189,5 @@ También se genera y almacena una gráfica en [Modelos_guardados/entrenamiento_g
 ![rendimiento entrenamiento canal gray](Modelos_guardados/entrenamiento_gray.png)
 
 ![rendimiento entrenamiento canal bgr](Modelos_guardados/entrenamiento_bgr.png)
+
+### Referencias
