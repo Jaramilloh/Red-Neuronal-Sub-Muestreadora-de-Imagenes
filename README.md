@@ -117,7 +117,7 @@ channel = input("\nPor favor, introduza el canal a extraer: 'gray' para escala d
 
 De seleccionar el canal 'gray', se creará y escribirá un archivo .csv llamado [gray_channel.csv](Entrenamiento/Dataset/gray_channel.csv). Si se seleccionan los tres canales de color RGB, se crearán y escribirán los siguientes archivos: [blue_channel.csv](Entrenamiento/Dataset/blue_channel.csv), [green_channel.csv](Entrenamiento/Dataset/green_channel.csv), [red_channel.csv](Entrenamiento/Dataset/red_channel.csv). Los archivos anteriores son los contenedores del conjunto de datos para entrenar y evaluar a la red neuronal sub-muestreadora de imágenes.
 
-NOTA: la decimacion espacial introduce efectos de espejo en la primera fila de pixeles en algunas imagenes, esto se debe a que el proceso se realiza en el dominio de la frecuencia y es necesario centralizar las frecuencias bajas aplicando una dft shift para poder operar la imagen con el filtro en frecuencia, y realizar el proceso inverso. Por dimensiones pares de las imágenes, se presentan estos efectos en los bordes. Por lo tanto, se filtran las muestras ruidosas, i.e. aquellas muestras cuyas salidas no se encuentren dentro del rango de sus caracteristicas.
+    NOTA: la decimacion espacial introduce efectos de espejo en la primera fila de pixeles en algunas imagenes, esto se debe a que el proceso se realiza en el dominio de la frecuencia y es necesario centralizar las frecuencias bajas aplicando una dft shift para poder operar la imagen con el filtro en frecuencia, y realizar el proceso inverso. Por dimensiones pares de las imágenes, se presentan estos efectos en los bordes. Por lo tanto, se filtran las muestras ruidosas, i.e. aquellas muestras cuyas salidas no se encuentren dentro del rango de sus caracteristicas.
 
 ```python
 # Se filtran las muestras ruidosas
@@ -162,16 +162,9 @@ batch_sz = int(input("\nPor favor, ingrese el numero de datos por cada lote de e
 epchs = int(input("\nPor favor, ingrese el numero epochs (repeticiones por cada muestra): "))
 ```
 
-También se solicitará introducir el conjunto de datos a utilizar. 
+Se almacenarán los modelos entrenados en [Entrenamiento/Modelo_azul_guardado](Entrenamiento/Modelo_azul_guardado), [Entrenamiento/Modelo_verde_guardado](Entrenamiento/Modelo_verde_guardado), [Entrenamiento/Modelo_rojo_guardado](Entrenamiento/Modelo_rojo_guardado), [Entrenamiento/Modelo_gris_guardado](Entrenamiento/Modelo_gris_guardado) respectivamente.
 
-```python
-# Especificar si se quiere entrenar con el conjunto de datos en escala de grises o los conjuntos de datos para los tres canales de color
-channel = input("\nPor favor, introduza los canales de color a ser utilizados como conjunto de datos; 'gray' para escala de grises, 'bgr' para canales de color: ")
-```
-
-Si selecciona 'bgr', se almacenarán los modelos entrenados en [Entrenamiento/Modelo_azul_guardado](Entrenamiento/Modelo_azul_guardado), [Entrenamiento/Modelo_verde_guardado](Entrenamiento/Modelo_verde_guardado), [Entrenamiento/Modelo_rojo_guardado](Entrenamiento/Modelo_rojo_guardado) respectivamente. Si se selecciona 'gray', se almacenará el modelo entrenado [Entrenamiento/Modelo_gris_guardado](Entrenamiento/Modelo_gris_guardado).
-
-Todo el registro del entrenamiento es guardado en un archivo de texto [Entrenamiento/bgr_entrenamiento.log](Entrenamiento/bgr_entrenamiento.log), o [Entrenamiento/gray_entrenamiento.log](Entrenamiento/gray_entrenamiento.log), para destacar, acá se encuentra el desempeño de cada modelo entrenado versus épocas y las métricas evaluadas sobre el modelo entrenado. 
+Todo el registro del entrenamiento es guardado en un archivo de texto [Entrenamiento/entrenamiento.log](Entrenamiento/entrenamiento.log), para destacar, acá se encuentra el desempeño de cada modelo entrenado versus épocas y las métricas evaluadas sobre cada modelo entrenado. 
 
 Se utilizó la métrica R2 o coeficiente de determinación para evaluar cada modelo de regresión entrenado. La ecuación implementada se obtuvó de [Coeficiente de Determinación.](https://en.wikipedia.org/wiki/Coefficient_of_determination)
 
@@ -185,7 +178,7 @@ Para gray_channel.csv, R2 = 0.983838
 
 También se genera y almacena una gráfica en [Entrenamiento/entrenamiento_gray.png](Entrenamiento/entrenamiento_gray.png), [Entrenamiento/entrenamiento_bgr.png](Entrenamiento/entrenamiento_bgr.png), que muestran el desempeño de cada modelo versus las épocas en las que se entrenó. El error es el [error absoluto medio](https://en.wikipedia.org/wiki/Mean_absolute_error). 
 
-![rendimiento entrenamiento](Entrenamiento/entrenamiento_canales_de_color.png.png)
+![rendimiento entrenamiento](Entrenamiento/entrenamiento_canales_de_color.png)
 
 ### Referencias
 

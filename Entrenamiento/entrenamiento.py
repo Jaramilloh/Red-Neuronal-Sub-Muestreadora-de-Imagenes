@@ -179,7 +179,7 @@ for i in range(len(dataframes)):
     # Cuando esto suceda, se retornan los parámetros con menor perdida:
     #https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping
     callback = tf.keras.callbacks.EarlyStopping(
-        monitor='mean_absolute_error', min_delta=0.001, patience=8, verbose=0, mode='min',
+        monitor='mean_absolute_error', min_delta=0.001, patience=10, verbose=0, mode='min',
         baseline=None, restore_best_weights=True
     )
 
