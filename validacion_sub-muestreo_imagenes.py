@@ -39,8 +39,8 @@ while channel != 'bgr' and channel != 'gray':
 
 
 print("\nPor favor, seleccione el caso adecuado:")
-print("1. Se sub-muestrearan todas las imagenes dentro del directorio Imagenes_HR")
-print("2. Se sub-muestreara una imagen especifica en el directorio Imagenes_HR")
+print("1. Se sub-muestrearan todas las imagenes dentro del directorio Validacion/Imagenes_HR")
+print("2. Se sub-muestreara una imagen especifica en el directorio Validacion/Imagenes_HR")
 caso = int(input("Caso: "))
 while caso != 1 and caso !=2:
     print("Error: caso no reconocido...")
@@ -49,9 +49,9 @@ while caso != 1 and caso !=2:
 start_time = time.time()
 
 if caso == 1:
-    print("Se sub-muestrearan todas las imagenes .png contenidas en el directorio Imagenes_HR, los resultados se almacenaran en el directorio Imagenes_LR...")
+    print("Se sub-muestrearan todas las imagenes .png contenidas en el directorio Validacion/Imagenes_HR, los resultados se almacenaran en el directorio Imagenes_LR...")
     #  Se obtiene una lista con los nombres de los archivos de las imagenes a sub-muestrear
-    filelist=os.listdir('Imagenes_HR')
+    filelist=os.listdir('Validacion/Imagenes_HR')
     for fichier in filelist[:]:
         if not(fichier.endswith(".png")): # Remueve nombres de archivos que no sean .png
             filelist.remove(fichier)
@@ -60,10 +60,9 @@ if caso == 1:
 elif caso == 2:
     file_name = input("\nPor favor, ingrese el nombre de la imagen a sub-muestrear junto a su formato (png, jpg): ")
     filelist = [file_name]
-    while os.path.isfile('Imagenes_HR/'+file_name) == False:
-        print("El archivo no existe dentro del directorio Imagenes_HR, por favor, ingrese un archivo valido:")
+    while os.path.isfile('Validacion/Imagenes_HR/'+file_name) == False:
+        print("El archivo no existe dentro del directorio Validacion/Imagenes_HR, por favor, ingrese un archivo valido:")
         file_name = input("\nPor favor, ingrese el nombre de la imagen a sub-muestrear junto a su formato (png, jpg): ")
-
 
 for fl in filelist:
     
@@ -72,7 +71,7 @@ for fl in filelist:
 
     # Si se desea sub-muestrear la imagen en los tres canales de color
     if channel == 'bgr':
-        img = cv2.imread(('Imagenes_HR/'+fl), cv2.IMREAD_COLOR)
+        img = cv2.imread(('Validacion/Imagenes_HR/'+fl), cv2.IMREAD_COLOR)
         h, w = img.shape[0:2]
         # Se verifican las dimensiones de la imagen, que sean divisibles entre 4
         if h%4 == 0 and w%4 == 0:
@@ -95,7 +94,7 @@ for fl in filelist:
 
     # Si se desea sub-muestrear la imagen en escala de grises
     elif channel == 'gray':
-        img = cv2.imread(('Imagenes_HR/'+fl), 0)
+        img = cv2.imread(('Validacion/Imagenes_HR/'+fl), 0)
         h, w = img.shape[0:2]
         # Se verifican las dimensiones de la imagen, que sean divisibles entre 4
         if h%4 == 0 and w%4 == 0:
@@ -117,13 +116,6 @@ for fl in filelist:
     # Se recorre cada modelo especifico para procesar el canal especifico
     for i in range(len(nombres)):
 
-        # Se carga el modelo entrenado para el canal de color especifico
-        print("Cargando el modelo entrenado: " + str(nombres[i]) + '...')
-        new_model = tf.keras.models.load_model(('Entrenamiento/Modelos_guardados/'+ nombres[i]))
-
-        # Se chequea la arquitectura de la red neuronal
-        #print(new_model.summary())
-  
         print("Procesando el canal " + str(color[i]))
 
         # Se extrae la matriz de imagen del canal de color actual
@@ -131,38 +123,34 @@ for fl in filelist:
             canal = img[:,:]
         else:
             canal = img[:,:,i]
-
-
-        y_completo = []
         # Se extraen ventanas de 4x4 pixeles y se almacenan como vectores de 16 caracteristicas
+        x = []
         for row in range(int(h/4)):
             for col in range(int(w/4)):
-                x = []
                 x.append(np.float32(canal[row*4:row*4+4, col*4:col*4+4].flatten()))
+        # Se crea un np.array a partir de la informacion extraida anteriormente
+        X = np.array(x)
+        # Normalizacion de las muestras del conjunto de datos de la imagen a sub-muestrear     
+        X = min_max_norm(X)
+        # No-linealizacion del conjunto de datos
+        X_aux = X.copy()
+        for j in range(X_aux.shape[1]):
+            X = np.column_stack((X, (X_aux[:,j]*X_aux[:,j])))
+        for j in range(X_aux.shape[1]):
+            X = np.column_stack((X, (X_aux[:,-j-1]*X_aux[:,-j+1]*X_aux[:,-j])))
 
-                # Se crea un np.array a partir de la informacion extraida anteriormente
-                X = np.array(x)
+        #print(X.shape)
+        # Se carga el modelo entrenado para el canal de color especifico
+        print("Cargando el modelo entrenado: " + str(nombres[i]) + '...')
+        new_model = tf.keras.models.load_model(('Entrenamiento/Modelos_guardados/'+ nombres[i]))
+        # Se chequea la arquitectura de la red neuronal
+        #print(new_model.summary())
 
-                # Normalizacion de las muestras del conjunto de datos de la imagen a sub-muestrear     
-                #X = min_max_norm(X)
+        # Se realizan las predicciones a partir de los datos de entrada
+        predictions = new_model.predict(X)
+        imgLR[:,:,i] = np.uint8(predictions.reshape(int(h/4), int(w/4)))
 
-                # No-linealizacion del conjunto de datos
-                X_aux = X.copy()
-                for j in range(X_aux.shape[1]):
-                    X = np.column_stack((X, (X_aux[:,j]*X_aux[:,j])))
-                for j in range(X_aux.shape[1]):
-                    X = np.column_stack((X, (X_aux[:,-j-1]*X_aux[:,-j+1]*X_aux[:,-j])))
-
-                #print(X.shape)
-                
-                # Se realizan las predicciones a partir de los datos de entrada
-                y_pred = new_model.predict(X)
-                y_completo.append(y_pred)
-
-        y_aux = np.array(y_completo).flatten()             
-        imgLR[:,:,i] = np.uint8(y_aux.reshape(int(h/4), int(w/4)))
-
-    cv2.imwrite(('Imagenes_LR/'+fl[:-4] + '_' + str(channel) + '_sub-muestreada.png') ,imgLR)
+    cv2.imwrite(('Validacion/Imagenes_LR/'+fl[:-4] + '_' + str(channel) + '_sub-muestreada.png') ,imgLR)
     print("La imagen %s ha sido sub-muestreada exitosamente..." % (fl))
     print("---Tiempo de ejecucion: %s segundos ---" % (time.time() - start_time_aux))
 
