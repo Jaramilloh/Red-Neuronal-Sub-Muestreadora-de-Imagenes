@@ -175,11 +175,12 @@ for i in range(len(dataframes)):
     normalize = tf.keras.layers.experimental.preprocessing.Normalization()
     normalize.adapt(X_train)
 
-    # Se define una interrupcion si no se cumple un factor de tolerancia en 8 epochs consecutivos sobre el error de validacion
+    # Se define una interrupcion si no se cumple un factor de tolerancia 'min_delta' en 200 epochs consecutivos 
+    # sobre el error de validacion.
     # Cuando esto suceda, se retornan los parámetros con menor perdida:
     #https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping
     callback = tf.keras.callbacks.EarlyStopping(
-        monitor='mean_absolute_error', min_delta=0.001, patience=10, verbose=0, mode='min',
+        monitor='val_loss', min_delta=1, patience=200, verbose=0, mode='min',
         baseline=None, restore_best_weights=True
     )
 
@@ -217,7 +218,7 @@ for i in range(len(dataframes)):
     # Se entrena el modelo y se guarda el registro del entrenamiento:
     print("\nEmpezando el entrenamiento de la red neuronal:")
     print("Se entrenaran con %d muestras." % (X_train.shape[0]))
-    history = model.fit(X_train, y_train, batch_size=batch_sz, epochs=epchs, callbacks=[callback]) #https://www.tensorflow.org/guide/keras/customizing_what_happens_in_fit
+    history = model.fit(X_train, y_train, validation_data=(X_test, y_test), batch_size=batch_sz, epochs=epchs, callbacks=[callback]) #https://www.tensorflow.org/guide/keras/customizing_what_happens_in_fit
     
     # Se grafica el registro de entrenamiento del modelo:
     print("El entrenamiento ha finalizado exitosamente...")
