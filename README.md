@@ -74,7 +74,7 @@ La generación del conjunto de datos consiste en dos pasos: sub-muestrear espaci
 
 Las imágenes a sub-muestrear se encuentran en el directorio [Entrenamiento/Dataset/X](Entrenamiento/Dataset/X) y estas deben estar en formato .png. 
 
-Ejecute el código [decimacion_espacial_linux.py](Entrenamiento/Dataset/decimacion_espacial_linux.py) o [decimacion_espacial_windows.py](Entrenamiento/Dataset/decimacion_espacial_windows.py) (de acuerdo a su sistema operativo), en la ubicación absoluta [Dataset/](Entrenamiento/Dataset). Los códigos se diferencian en que, en Linux, se aplica multiproceso en 4 núcleos de la CPU para optimizar el proceso de sub-muestreo. 
+Ejecute el código [decimacion_espacial_linux.py](Entrenamiento/Dataset/decimacion_espacial_linux.py) o [decimacion_espacial_windows.py](Entrenamiento/Dataset/decimacion_espacial_windows.py) (de acuerdo a su sistema operativo), ubicadod de forma absoluta [Entrenamiento/Dataset/](Entrenamiento/Dataset). Los códigos se diferencian en que, en Linux, se aplica multiproceso en 4 núcleos de la CPU para optimizar el proceso de sub-muestreo. 
 
 Se le solicitará al usuario introducir el factor K de sub-muestreo.
 
@@ -90,7 +90,7 @@ itr = int(input("Por favor, introduzca el numero de iteraciones para optimizar l
 
 Lo anterior con el fin de identificar el filtro con el mínimo error absoluto medio local en el número de iteraciones. El error absoluto medio se calcula a partir de la imagen filtrada y sub-muestreada, que es sobre-muestreada (escalada) por el mismo factor K y es comparada con la imagen original en alta resolución. Se evalúan los 'itr' filtros especificados por el usuario y se elige el mejor almacenando sus resultados.
 
-El código anterior generará los siguientes directorios respectivamente: [Y](Entrenamiento/Dataset/Y), [Filtros_Gaussianos](Entrenamiento/Dataset/Filtros_Gaussianos), [Interpolacion_bicubica](Entrenamiento/Dataset/Interpolacion_bicubica), los cuales almacenarán las imágenes originales sub-muestreadas en los tres canales de color, La función de transferencia, en frecuencia, del filtro implementado en cada imagen, y por último, la escalización a partir de una interpolación bicúbica de las imágenes resultantes en [Y](Entrenamiento/Dataset/Y), esto último para motivos prácticos de evaluación a desarrollar más adelante en el protocolo de pruebas del sistema.
+El código anterior generará los siguientes directorios respectivamente: [Entrenamiento/Y](Entrenamiento/Dataset/Y), [Entrenamiento/Filtros_Gaussianos](Entrenamiento/Dataset/Filtros_Gaussianos), [Entrenamiento/Interpolacion_bicubica](Entrenamiento/Dataset/Interpolacion_bicubica), los cuales almacenarán las imágenes originales sub-muestreadas en los tres canales de color, La función de transferencia, en frecuencia, del filtro implementado en cada imagen, y por último, la escalización a partir de una interpolación bicúbica de las imágenes resultantes en [Y](Entrenamiento/Dataset/Y), esto último para motivos prácticos de evaluación a desarrollar más adelante en el protocolo de pruebas del sistema.
 
 
 **Imagen contenida dentro [X](Entrenamiento/Dataset/X) (*tomada de [1]*)**
@@ -109,7 +109,7 @@ El código anterior generará los siguientes directorios respectivamente: [Y](En
 
 ![Imagen LR](Entrenamiento/Dataset/Interpolacion_bicubica/bicHR_000000000009.png)
 
-Una vez el primer paso es ejecutado, se debe realizar el segundo paso: la creación de los conjuntos de datos en formato .csv. Para esto, ejecute el código [crear_dataframe.py](Entrenamiento/Dataset/crear_dataframe.py) ubicado de forma absoluta en el directorio [/Dataset/](Entrenamiento/Dataset). Se solicitará al usuario introducir cuál canal de color desea extraer en formato .csv.
+Una vez el primer paso es ejecutado, se debe realizar el segundo paso: la creación de los conjuntos de datos en formato .csv. Para esto, ejecute el código [crear_dataframe.py](Entrenamiento/Dataset/crear_dataframe.py) ubicado de forma absoluta en el directorio [Entrenamiento/Dataset/](Entrenamiento/Dataset). Se solicitará al usuario introducir cuál canal de color desea extraer en formato .csv.
 
 ```python
 channel = input("\nPor favor, introduza el canal a extraer: 'gray' para escala de grises, 'bgr' para canales de color: ")
@@ -161,12 +161,14 @@ batch_sz = int(input("\nPor favor, ingrese el numero de datos por cada lote de e
 epchs = int(input("\nPor favor, ingrese el numero epochs (repeticiones por cada muestra): "))
 ```
 
-También se solicitará introducir el conjunto de datos a utilizar: canal de color. Para cada canal de color, se almacenará el modelo entrenado en [Entrenamiento/Modelo_azul_guardado](Entrenamiento/Modelo_azul_guardado), [Entrenamiento/Modelo_verde_guardado](Entrenamiento/Modelo_verde_guardado), [Entrenamiento/Modelo_rojo_guardado](Entrenamiento/Modelo_rojo_guardado) respectivamente, y si se selecciona, se almacenará el modelo entrenado [Entrenamiento/Modelo_gris_guardado](Entrenamiento/Modelo_gris_guardado).
+También se solicitará introducir el conjunto de datos a utilizar. 
 
 ```python
 # Especificar si se quiere entrenar con el conjunto de datos en escala de grises o los conjuntos de datos para los tres canales de color
 channel = input("\nPor favor, introduza los canales de color a ser utilizados como conjunto de datos; 'gray' para escala de grises, 'bgr' para canales de color: ")
 ```
+
+Si selecciona 'bgr', se almacenarán los modelos entrenados en [Entrenamiento/Modelo_azul_guardado](Entrenamiento/Modelo_azul_guardado), [Entrenamiento/Modelo_verde_guardado](Entrenamiento/Modelo_verde_guardado), [Entrenamiento/Modelo_rojo_guardado](Entrenamiento/Modelo_rojo_guardado) respectivamente. Si se selecciona 'gray', se almacenará el modelo entrenado [Entrenamiento/Modelo_gris_guardado](Entrenamiento/Modelo_gris_guardado).
 
 Todo el registro del entrenamiento es guardado en un archivo de texto [Entrenamiento/bgr_entrenamiento.log](Entrenamiento/bgr_entrenamiento.log), o [Entrenamiento/gray_entrenamiento.log](Entrenamiento/gray_entrenamiento.log), para destacar, acá se encuentra el desempeño de cada modelo entrenado versus épocas y las métricas evaluadas sobre el modelo entrenado. 
 
