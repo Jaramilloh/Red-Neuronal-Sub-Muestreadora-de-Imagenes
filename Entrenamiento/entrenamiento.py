@@ -119,22 +119,18 @@ if channel == 'bgr':
     dataframes = ['blue_channel.csv', 'green_channel.csv', 'red_channel.csv']
     color = ['blue', 'green', 'red']
     nombres = ['Modelo_azul_guardado', 'Modelo_verde_guardado', 'Modelo_rojo_guardado']
+
     # Directorios especificos de cada modelo entrenado:
     # Se elimina los directorios que almacenaran los modelos entrenados si ya existen
-    if os.path.isdir('Modelos_guardados/Modelo_azul_guardado'):
-        rmdir = 'Modelos_guardados/Modelo_azul_guardado'
+    if os.path.isdir('Modelo_azul_guardado'):
+        rmdir = 'Modelo_azul_guardado'
         shutil.rmtree(rmdir)
-    if os.path.isdir('Modelos_guardados/Modelo_verde_guardado'):
-        rmdir = 'Modelos_guardados/Modelo_verde_guardado'
+    if os.path.isdir('Modelo_verde_guardado'):
+        rmdir = 'Modelo_verde_guardado'
         shutil.rmtree(rmdir)
-    if os.path.isdir('Modelos_guardados/Modelo_rojo_guardado'):
-        rmdir = 'Modelos_guardados/Modelo_rojo_guardado'
+    if os.path.isdir('Modelo_rojo_guardado'):
+        rmdir = 'Modelo_rojo_guardado'
         shutil.rmtree(rmdir)    
-    # Se crean los directorios que almacenaran los modelos entrenados
-    os.makedirs((os.getcwd() + '/Modelos_guardados/Modelo_azul_guardado' ), mode=0o777, exist_ok=False) 
-    os.makedirs((os.getcwd() + '/Modelos_guardados/Modelo_verde_guardado' ), mode=0o777, exist_ok=False) 
-    os.makedirs((os.getcwd() + '/Modelos_guardados/Modelo_rojo_guardado' ), mode=0o777, exist_ok=False)
-    print("Se crearon los directorios objetivos para almacenar los modelos entrenados.")
 
 # Si se desea entrenar un solo modelo para un canal en escala de grises:
 elif channel == 'gray':
@@ -142,20 +138,12 @@ elif channel == 'gray':
     dataframes = ['gray_channel.csv']
     color = ['gray']
     nombres = ['Modelo_gris_guardado']
+
     # Directorios especificos de cada modelo entrenado:
     # Se elimina los directorios que almacenaran los modelos entrenados si ya existen
-    if os.path.isdir('Modelos_guardados/Modelo_gris_guardado'):
-        rmdir = 'Modelos_guardados/Modelo_gris_guardado'
+    if os.path.isdir('Modelo_gris_guardado'):
+        rmdir = 'Modelo_gris_guardado'
         shutil.rmtree(rmdir)    
-    # Se crean los directorios que almacenaran los modelos entrenados
-    os.makedirs((os.getcwd() + '/Modelos_guardados/Modelo_gris_guardado' ), mode=0o777, exist_ok=False) 
-    print("Se crearon los directorios objetivos para almacenar el modelo entrenado.")   
-
-# Directorio para almacenar los modelos entrenados:
-# Se elimina el directorio general que guarda los modelos entrenados si ya existe
-if os.path.isdir('Modelos_guardados') == False:
-    # Se crea el directorio general que guarda los modelos entrenados
-    os.makedirs((os.getcwd() + '/Modelos_guardados' ), mode=0o777, exist_ok=False) 
 
 # Lista para almacenar las metricas de los modelos entrenados
 r2_metrics = []
@@ -238,6 +226,7 @@ for i in range(len(dataframes)):
     print("\nEmpezando el entrenamiento de la red neuronal:")
     print("Se entrenaran con %d muestras." % (X_train.shape[0]))
     history = model.fit(X_train, y_train, batch_size=batch_sz, epochs=epchs)#, callbacks=[callback]) #https://www.tensorflow.org/guide/keras/customizing_what_happens_in_fit
+    
     # Se grafica el registro de entrenamiento del modelo:
     print("El entrenamiento ha finalizado exitosamente...")
     print("Creando una grafica del entrenamiento con %s..." % (dataframes[i]))
@@ -261,11 +250,13 @@ for i in range(len(dataframes)):
     print("Coeficiente R2: ", r2)
 
     # Se almacena el modelo entrenado
-    model.save(('Modelos_guardados/'+ nombres[i]))
-    print("\nEl modelo entrenado se ha guardado correctamente en: Modelos_guardados/" + nombres[i])
+    #nm = os.getcwd() + '/Modelos_guardados/'+ str(nombres[i])
+    nm = str(nombres[i])
+    model.save(nm)
+    print("\nEl modelo entrenado se ha guardado correctamente en: " + nombres[i])
 
 # Se almacena la grafica con el rendimiento del entrenamiento del modelo
-plt.savefig(('Modelos_guardados//entrenamiento_'+str(channel)+'.png'), bbox_inches='tight')
+plt.savefig(('entrenamiento_'+str(channel)+'.png'), bbox_inches='tight')
 
 # Resumen de la evaluacion de los modelos entrenados
 print("\nCoeficientes de determinacion en cada modelo entrenado:")

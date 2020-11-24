@@ -142,7 +142,7 @@ for fl in filelist:
         #print(X.shape)
         # Se carga el modelo entrenado para el canal de color especifico
         print("Cargando el modelo entrenado: " + str(nombres[i]) + '...')
-        new_model = tf.keras.models.load_model(('Entrenamiento/Modelos_guardados/'+ nombres[i]))
+        new_model = tf.keras.models.load_model(('Entrenamiento/'+ nombres[i]))
         # Se chequea la arquitectura de la red neuronal
         #print(new_model.summary())
 
