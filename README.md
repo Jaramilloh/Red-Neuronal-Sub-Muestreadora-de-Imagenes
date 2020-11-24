@@ -185,9 +185,7 @@ Para gray_channel.csv, R2 = 0.983838
 
 También se genera y almacena una gráfica en [Entrenamiento/entrenamiento_gray.png](Entrenamiento/entrenamiento_gray.png), [Entrenamiento/entrenamiento_bgr.png](Entrenamiento/entrenamiento_bgr.png), que muestran el desempeño de cada modelo versus las épocas en las que se entrenó. El error es el [error absoluto medio](https://en.wikipedia.org/wiki/Mean_absolute_error). 
 
-![rendimiento entrenamiento canal gray](Entrenamiento/entrenamiento_gray.png)
-
-![rendimiento entrenamiento canal bgr](Entrenamiento/entrenamiento_bgr.png)
+![rendimiento entrenamiento](Entrenamiento/entrenamiento_canales_de_color.png.png)
 
 ### Referencias
 

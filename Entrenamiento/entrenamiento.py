@@ -12,17 +12,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 import tensorflow as tf
-import tensorflow_addons as tfa
 
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
-import kerastuner as kt
 
 import time
 import sys
 import os 
 import shutil
-import IPython
 
 def plot_loss(hist, name, color):
     '''
@@ -91,17 +88,19 @@ alfa_reg_l2 = float(input("\nPor favor, ingrese el valor el factor de regulariza
 batch_sz = int(input("\nPor favor, ingrese el numero de datos por cada lote de entrenamiento: "))
 epchs = int(input("\nPor favor, ingrese el numero epochs (repeticiones por cada muestra): "))
 
+print("\nSe entrenara para los tres canales de color y para escala de grises...")
+
 # Especificar si se quiere entrenar con el conjunto de datos en escala de grises o los conjuntos de datos para los tres canales de color
-channel = input("\nPor favor, introduza los canales de color a ser utilizados como conjunto de datos; 'gray' para escala de grises, 'bgr' para canales de color: ")
+#channel = input("\nPor favor, introduza los canales de color a ser utilizados como conjunto de datos; 'gray' para escala de grises, 'bgr' para canales de color: ")
 # Si se ingreso un canal incorrecto:
-while channel != 'bgr' and channel != 'gray':
-    print("Error: canal no reconocido...")
-    channel = input("\nPor favor, introduza el canal a sub-muestrear: 'gray' para escala de grises, 'bgr' para canales de color: ")
+#while channel != 'bgr' and channel != 'gray':
+    #print("Error: canal no reconocido...")
+    #channel = input("\nPor favor, introduza el canal a sub-muestrear: 'gray' para escala de grises, 'bgr' para canales de color: ")
     #sys.exit()
 
 # Se abre un registro para guardar cada print en un archivo llamada log_entrenamiento.log
 old_stdout = sys.stdout
-log_file = open((str(channel)+"_entrenamiento.log"),"w")
+log_file = open("entrenamiento.log","w")
 sys.stdout = log_file
 
 print("\nLos hiper-parametros para entrenar los modelos son:")
@@ -113,37 +112,30 @@ print("Numero de epocas (epoch): %d " % (epchs))
 
 start_time = time.time()
 
-# Si se desea entrenar tres modelos para cada canal de color:
-if channel == 'bgr':
-    # Se inicializan listas con los nombres de los conjuntos de datos y el color correspondiente a cada canal
-    dataframes = ['blue_channel.csv', 'green_channel.csv', 'red_channel.csv']
-    color = ['blue', 'green', 'red']
-    nombres = ['Modelo_azul_guardado', 'Modelo_verde_guardado', 'Modelo_rojo_guardado']
+print("\nSe entrenara para los tres canales de color y para escala de grises...")
 
-    # Directorios especificos de cada modelo entrenado:
-    # Se elimina los directorios que almacenaran los modelos entrenados si ya existen
-    if os.path.isdir('Modelo_azul_guardado'):
-        rmdir = 'Modelo_azul_guardado'
-        shutil.rmtree(rmdir)
-    if os.path.isdir('Modelo_verde_guardado'):
-        rmdir = 'Modelo_verde_guardado'
-        shutil.rmtree(rmdir)
-    if os.path.isdir('Modelo_rojo_guardado'):
-        rmdir = 'Modelo_rojo_guardado'
-        shutil.rmtree(rmdir)    
+# Se inicializan listas con los nombres de los conjuntos de datos y el color correspondiente a cada canal
+dataframes = ['blue_channel.csv', 'green_channel.csv', 'red_channel.csv', 'gray_channel.csv']
+color = ['blue', 'green', 'red', 'gray']
+nombres = ['Modelo_azul_guardado', 'Modelo_verde_guardado', 'Modelo_rojo_guardado','Modelo_gris_guardado']
 
-# Si se desea entrenar un solo modelo para un canal en escala de grises:
-elif channel == 'gray':
-    # Se inicializan listas con el nombre del conjunto de datos y el color correspondiente
-    dataframes = ['gray_channel.csv']
-    color = ['gray']
-    nombres = ['Modelo_gris_guardado']
+# Directorios especificos de cada modelo entrenado:
+# Se elimina los directorios que almacenaran los modelos entrenados si ya existen
+if os.path.isdir('Modelo_azul_guardado'):
+    rmdir = 'Modelo_azul_guardado'
+    shutil.rmtree(rmdir)
 
-    # Directorios especificos de cada modelo entrenado:
-    # Se elimina los directorios que almacenaran los modelos entrenados si ya existen
-    if os.path.isdir('Modelo_gris_guardado'):
-        rmdir = 'Modelo_gris_guardado'
-        shutil.rmtree(rmdir)    
+if os.path.isdir('Modelo_verde_guardado'):
+    rmdir = 'Modelo_verde_guardado'
+    shutil.rmtree(rmdir)
+
+if os.path.isdir('Modelo_rojo_guardado'):
+    rmdir = 'Modelo_rojo_guardado'
+    shutil.rmtree(rmdir)
+
+if os.path.isdir('Modelo_gris_guardado'):
+    rmdir = 'Modelo_gris_guardado'
+    shutil.rmtree(rmdir)  
 
 # Lista para almacenar las metricas de los modelos entrenados
 r2_metrics = []
@@ -183,11 +175,11 @@ for i in range(len(dataframes)):
     normalize = tf.keras.layers.experimental.preprocessing.Normalization()
     normalize.adapt(X_train)
 
-    # Se define una interrupcion si no se cumple un factor de tolerancia en 8 epochs consecutivos
+    # Se define una interrupcion si no se cumple un factor de tolerancia en 8 epochs consecutivos sobre el error de validacion
     # Cuando esto suceda, se retornan los parámetros con menor perdida:
     #https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping
     callback = tf.keras.callbacks.EarlyStopping(
-        monitor='val_loss', min_delta=0.001, patience=8, verbose=0, mode='min',
+        monitor='mean_absolute_error', min_delta=0.001, patience=8, verbose=0, mode='min',
         baseline=None, restore_best_weights=True
     )
 
@@ -215,7 +207,7 @@ for i in range(len(dataframes)):
             use_bias=True,
             kernel_regularizer=tf.keras.regularizers.L1L2(l1=alfa_reg_l1, l2=alfa_reg_l2))
     ])
-
+    
     # Se compila la red neuronal con un optimizador Adam, con perdida y metrica igual al error absoluto medio entre los 
     # datos predichos y los datos de entrenamiento:
     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=alfa_train), #https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/SGD
@@ -225,7 +217,7 @@ for i in range(len(dataframes)):
     # Se entrena el modelo y se guarda el registro del entrenamiento:
     print("\nEmpezando el entrenamiento de la red neuronal:")
     print("Se entrenaran con %d muestras." % (X_train.shape[0]))
-    history = model.fit(X_train, y_train, batch_size=batch_sz, epochs=epchs)#, callbacks=[callback]) #https://www.tensorflow.org/guide/keras/customizing_what_happens_in_fit
+    history = model.fit(X_train, y_train, batch_size=batch_sz, epochs=epchs, callbacks=[callback]) #https://www.tensorflow.org/guide/keras/customizing_what_happens_in_fit
     
     # Se grafica el registro de entrenamiento del modelo:
     print("El entrenamiento ha finalizado exitosamente...")
@@ -256,7 +248,7 @@ for i in range(len(dataframes)):
     print("\nEl modelo entrenado se ha guardado correctamente en: " + nombres[i])
 
 # Se almacena la grafica con el rendimiento del entrenamiento del modelo
-plt.savefig(('entrenamiento_'+str(channel)+'.png'), bbox_inches='tight')
+plt.savefig('entrenamiento_canales_de_color.png', bbox_inches='tight')
 
 # Resumen de la evaluacion de los modelos entrenados
 print("\nCoeficientes de determinacion en cada modelo entrenado:")
