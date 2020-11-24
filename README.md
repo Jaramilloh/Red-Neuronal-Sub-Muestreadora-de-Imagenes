@@ -142,8 +142,9 @@ X1,X2,X3,X4,X5,X6,X7,X8,X9,X10,X11,X12,X13,X14,X15,X16,Y
 
 ![arquitectura red neuronal](Entrenamiento/modelo.png)
 
-Cada muestra tiene 16 caracteríticas, las cuales se no-linealizan con el cuadrado de estas mismas y la multiplicación entre estas, obteniendo un total de 48 características de entrada en la red. 
-Después de la capa de entrada, tiene una capa para normalizar las muestras de entrada a partir de una normalización con media y desviación estándar del conjunto de datos de entrenamiento.
+Cada muestra tiene 16 caracteríticas, las cuales se no-linealizan con el cuadrado de estas mismas y la multiplicación entre cada 3 características, obteniendo un total de 48 características de entrada en la red.
+
+La red tiene una capa para normalizar las muestras de entrada a partir de una normalización con media y desviación estándar realizada en el conjunto de datos de entrenamiento.
 
 La red neuronal tiene una sola capa interna de 16 neuronas activados a partir de una funcion 'relu' y una sola neurona en la capa de salida, ademas, la funcion de perdida de cada perceptron estará regularizada por una norma L2 y una norma L1 (ElasticNet) en un factor alfa l1 y l2 dado por el usuario, esto con el fin de actualizar los pesos en cantidades menores para hacer la red mas robusta al ruido local en el conjunto de datos no-linealizado.
 
