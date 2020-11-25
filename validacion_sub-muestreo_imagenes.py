@@ -53,9 +53,14 @@ if caso == 1:
     #  Se obtiene una lista con los nombres de los archivos de las imagenes a sub-muestrear
     filelist=os.listdir('Validacion/Imagenes_HR')
     for fichier in filelist[:]:
-        if not(fichier.endswith(".png")): # Remueve nombres de archivos que no sean .png
+        if (fichier.endswith(".png") == True) or (fichier.endswith(".jpg") == True): # Remueve nombres de archivos que no sean .png
+            None
+        else:       
             filelist.remove(fichier)
     filelist.sort()
+    
+    print("\nArchivos a sub-muestrear:")
+    print(filelist)
 
 elif caso == 2:
     file_name = input("\nPor favor, ingrese el nombre de la imagen a sub-muestrear junto a su formato (png, jpg): ")

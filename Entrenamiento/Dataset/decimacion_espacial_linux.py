@@ -202,9 +202,8 @@ Para cada imagen HR en la lista de archivos:
 
 print("\nEl directorio de trabajo es: " + os.getcwd())
 
-HR_dirs = ['X']
-HR_dirs.sort()
-print ("\nLos directorios que contienen las imagenes HR son : " + str(HR_dirs)) 
+
+print ("\nEl directorio que contiene las imagenes HR son : X") 
 
 # Especificar el factor de sub-muestreo y el numero de iteraciones
 K = int(input("\nPor favor, introduzca el factor de sub-muestreo, debe ser divisible entre 2 en la medida de lo posible (se tomara el numero entero del valor introducido): "))
@@ -243,13 +242,13 @@ print("\nRecorriendo el directorio X/")
 #  Se obtienen los nombres de los archivos de las imagenes de sub-apertura
 filelist=os.listdir('X')
 for fichier in filelist[:]:
-    if not(fichier.endswith(".png")): # Remueve nombres de archivos que no sean .png
+    if (fichier.endswith(".png") == True) or (fichier.endswith(".jpg") == True): # Remueve nombres de archivos que no sean .png
+        None
+    else:       
         filelist.remove(fichier)
 filelist.sort()
 
-# Se recorren las imagenes de sub-apertura encontradas
 j = 0
-
 for i in range(len(filelist)):
 
     files = filelist[i]

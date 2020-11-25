@@ -48,22 +48,29 @@ y LR. Se organizan ambas listas en orden alfanumerico
 
 print("\nEl directorio de trabajo es: " + os.getcwd())
 
-channel = input("\nPor favor, introduza el canal a extraer: 'gray' para escala de grises, 'bgr' para canales de color: ")
+#channel = input("\nPor favor, introduza el canal a extraer: 'gray' para escala de grises, 'bgr' para canales de color: ")
 # Si se ingreso un canal incorrecto:
-while channel != 'bgr' and channel != 'gray':
-    print("Error: canal no reconocido...")
-    channel = input("\nPor favor, introduza el canal a sub-muestrear: 'gray' para escala de grises, 'bgr' para canales de color: ")
+#while channel != 'bgr' and channel != 'gray':
+    #print("Error: canal no reconocido...")
+    #channel = input("\nPor favor, introduza el canal a sub-muestrear: 'gray' para escala de grises, 'bgr' para canales de color: ")
     #sys.exit()
+print("Se extraera un dataframe por cada canal de color: azul, verde, rojo, gris")
+channel = 'gray'
 
 start_time = time.time()
 
 
 #  Se obtienen los nombres de los archivos de las imagenes HR
-filelistHR = os.listdir('X')
+filelistHR=os.listdir('X')
 for fichier in filelistHR[:]:
-    if not(fichier.endswith(".png")): # Remueve nombres de archivos que no sean .png
+    if (fichier.endswith(".png") == True) or (fichier.endswith(".jpg") == True): # Remueve nombres de archivos que no sean .png
+        None
+    else:       
         filelistHR.remove(fichier)
 filelistHR.sort()
+ 
+print("\nArchivos a extraer datos:")
+print(filelistHR)
 
 #  Se obtienen los nombres de los archivos de las imagenes LR
 filelistLR = os.listdir('Y')
@@ -71,7 +78,9 @@ filelistLR = os.listdir('Y')
 if len(filelistHR) == len(filelistLR):
 
     for fichier in filelistLR[:]:
-        if not(fichier.endswith(".png")): # Remueve nombres de archivos que no sean .png
+        if (fichier.endswith(".png") == True) or (fichier.endswith(".jpg") == True): # Remueve nombres de archivos que no sean .png
+            None
+        else:       
             filelistLR.remove(fichier)
     filelistLR.sort()
     
@@ -108,6 +117,8 @@ if len(filelistHR) == len(filelistLR):
                     print("Se han almacenado correctamente los resultados de la imagen %d..." % (i))
                     print("---Tiempo de ejecucion: %s segundos ---" % (time.time() - start_time_aux))
     
+        channel = 'bgr'
+
     if channel == 'bgr':
         
         if os.path.isfile('red_channel.csv') and os.path.isfile('blue_channel.csv') and os.path.isfile('green_channel.csv'):

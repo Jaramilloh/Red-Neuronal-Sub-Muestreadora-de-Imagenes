@@ -14,6 +14,29 @@ import os
 import shutil
 import time
 
+
+def borde_impar(img):
+    '''
+    Funcion para añadir bordes en los extremos de la imagen para que esta tenga dimensiones
+    impares
+    '''
+    h,w = img.shape[0:2]
+
+    while h%2 == True:
+        img_aux = img.copy()
+        b = np.zeros((1, len(img[0,:], 3)))
+        img = np.concatenate((img_aux, b), axis=0)
+        h, w = img.shape[0:2]
+
+    while w%2 == True:
+        img_aux = img.copy()
+        b = np.zeros((len(img[:,0], 1, 3)))
+        img = np.concatenate((img_aux, b), axis=1)
+        h, w = img.shape[0:2]
+
+    return img
+
+
 def filtro_gaussian(img, sigmax, sigmay):
     '''
     Esta funcion genera el filtro Gaussiano en las dimensiones de la
@@ -43,9 +66,11 @@ def filtro_gaussian(img, sigmax, sigmay):
 
     # Se crean dos matrices con el mismo filtro, uno para multiplicar la parte real, y otro para multiplicar la parte imaginaria
     gausss = np.zeros((gaussian_norm.shape[0], gaussian_norm.shape[1], 2), dtype=np.float32)
+    #gausss[:,:,0] = 1
     gausss[:,:,0] = gaussian_norm
     gausss[:,:,1] = gaussian_norm
-    
+    #gausss[:,:,1] = 1
+
     return gausss
 
 def iteraciones_opt(img, gaussian, sfft_img_c1, sfft_img_c2, sfft_img_c3, K):
@@ -95,12 +120,25 @@ def iteraciones_opt(img, gaussian, sfft_img_c1, sfft_img_c2, sfft_img_c3, K):
 
     # Se juntan los canales en una sola imagen
     img_flt = cv2.merge((img_fltc1, img_fltc2, img_fltc3))
+    #cv2.imwrite('img_flt.png', img_flt)
+
+    h,w = img_flt.shape[0:2]
+    # Mientras las dimensiones no sean divisibles entre 4
+    while h%4 != 0:
+        img_aux = img_flt.copy()
+        img_flt = img_aux[0:-1,:,:]
+        h, w = img_flt.shape[0:2]
+    while w%4 != 0:
+        img_aux = img_flt.copy()
+        img_flt = img_aux[:,0:-1,:]
+        h, w = img_flt.shape[0:2]    
+
     img_dwn = img_flt[0::K,0::K] 
 
     # Se interpola la imagen sub-muestreara
     img_resize = cv2.resize(img_dwn, None, fx=K, fy=K, interpolation = cv2.INTER_CUBIC)
     # Se calcula el error entre la imagen interpolada y la imagen original
-    J = 1/(len(img.flat))*(np.sum(np.subtract(img_resize,img)))
+    J = 1/(len(img.flat))*(np.sum(np.abs(np.subtract(img_resize,img))))
 
     return J, img_dwn
 
@@ -137,8 +175,7 @@ Para cada imagen HR en la lista de archivos:
 
 print("\nEl directorio de trabajo es: " + os.getcwd())
 
-HR_dirs = ['X']
-print ("\nLos directorios que contienen las imagenes HR son : " + str(HR_dirs)) 
+print ("\nEl directorio que contienen las imagenes HR es :  X") 
 
 # Especificar el factor de sub-muestreo y el numero de iteraciones
 Ki = input("\nPor favor, introduzca el factor de sub-muestreo, debe ser divisible entre 2 en la medida de lo posible (se tomara el numero entero del valor introducido): ")
@@ -168,23 +205,25 @@ if os.path.isdir('Interpolacion_bicubica'):
     rmdir = 'Interpolacion_bicubica'
     shutil.rmtree(rmdir)        
 
-# Se crean los directorios "Y", "Filtros_Gaussianos" y "Interpolacion_bicubica"
+# Se crean los directorios "Y", "Filtros_Gaussianos" y "Interpolacion_bicubica":
+# Se crean los directorios objetivos para almacenar las imagenes sub-muestreadas espacialmente,
+# los filtro Gaussianos, y las imagenes sub-muestreadas pero interpoladas en el mismo factor por una funcion bicubica.
 os.makedirs((os.getcwd() + '/Y' ), mode=0o777, exist_ok=False) 
 os.makedirs((os.getcwd() + '/Filtros_Gaussianos' ), mode=0o777, exist_ok=False) 
 os.makedirs((os.getcwd() + '/Interpolacion_bicubica' ), mode=0o777, exist_ok=False)
 print("Se crearon los directorios objetivos para almacenar los resultados.")
 
-i = 0
-print("\nRecorriendo el directorio : " + str(HR_dirs[i]))
-# Se crean los directorios objetivos para almacenar las imagenes sub-muestreadas espacialmente,
-# los filtro Gaussianos, y las imagenes sub-muestreadas pero interpoladas en el mismo factor por una funcion bicubica.
-
 #  Se obtienen los nombres de los archivos de las imagenes de sub-apertura
-filelist=os.listdir(HR_dirs[i])
+filelist=os.listdir('X')
 for fichier in filelist[:]:
-    if not(fichier.endswith(".png")): # Remueve nombres de archivos que no sean .png
+    if (fichier.endswith(".png") == True) or (fichier.endswith(".jpg") == True): # Remueve nombres de archivos que no sean .png
+        None
+    else:       
         filelist.remove(fichier)
 filelist.sort()
+ 
+print("\nArchivos a sub-muestrear:")
+print(filelist)
 
 # Se recorren las imagenes de sub-apertura encontradas
 j = 0
@@ -193,25 +232,42 @@ for files in filelist:
     start_time_aux = time.time()
     
     # Imagen a sub-muestrear
-    print("\nProcesando imagen: " + str(HR_dirs[i] + '/X/' + files))
-    img = cv2.imread((HR_dirs[i] + '/' + files), cv2.IMREAD_COLOR)
+    print("\nProcesando imagen: X/" + files))
+    img = cv2.imread(('X/' + files), cv2.IMREAD_COLOR)
     
+    h, w = img.shape[0:2]
+    # Se verifican las dimensiones de la imagen, que sean divisibles entre 4
+    if h%4 == 0 and w%4 == 0:
+        print("Las dimensiones de la imagen son correctamente divisibles entre 4")
+    else:
+        print("Las dimensiones de la imagen no son incorrectamente divisibles entre 4, eliminando bordes extra...")
+        while h%4 != 0:
+            img_aux = img.copy()
+            img = img_aux[0:-1,:,:]
+            h, w = img.shape[0:2]
+        while w%4 != 0:
+            img_aux = img.copy()
+            img = img_aux[:,0:-1,:]
+            h, w = img.shape[0:2]    
+
+    img_aux = borde_impar(img)
+
     # Frecuencia de corte inicial, teoricamente dada por el Teorema de Muestro de Nyquist
     # fcx = fsx/(2*K)
     # fcy = fsy(2*K)
     # Ambos valores teoricos se disminuyen 10 pixeles, por consideraciones de implementacion
-    sigmax = int((1/(2*K))*(img.shape[0]))
-    sigmay = int((1/(2*K))*(img.shape[1]))
+    sigmax = int((1/(2*K))*(img_aux.shape[0]))
+    sigmay = int((1/(2*K))*(img_aux.shape[1]))
 
     sigmasx = np.arange(sigmax, sigmax+itr, 1)
     sigmasy = np.arange(sigmay, sigmay+itr, 1)
     
     # Generacion de los filtros Gaussianos a evaluar
     gaussian = []
-    gaussian = [filtro_gaussian(img, sigmasx[i], sigmasy[i]) for i in range(len(sigmasx))]
+    gaussian = [filtro_gaussian(img_aux, sigmasx[i], sigmasy[i]) for i in range(len(sigmasx))]
 
     # Extraccion de los canales de color de la imagen a sub-muestrear
-    b,g,r = cv2.split(img)
+    b,g,r = cv2.split(img_aux)
 
     # FFT para cada canal de color
     img_fft_img_c1 = cv2.dft(np.float32(b),flags = cv2.DFT_COMPLEX_OUTPUT)
@@ -229,9 +285,9 @@ for files in filelist:
 
     # Se empiezan a evaluar los filtros 
     for gauss in gaussian:
-        j_aux, img_aux = iteraciones_opt(img, gauss, sfft_img_c1, sfft_img_c2, sfft_img_c3, K)
+        j_aux, img_aux_dwn = iteraciones_opt(img, gauss, sfft_img_c1, sfft_img_c2, sfft_img_c3, K)
         Js.append(j_aux)
-        img_dwn.append(img_aux)
+        img_dwn.append(img_aux_dwn)
 
     # Se obtiene el indice del filtro Gaussiano con menor error
     ind_min = np.argmin(Js)
