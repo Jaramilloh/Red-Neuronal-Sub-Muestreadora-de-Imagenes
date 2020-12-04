@@ -3,8 +3,8 @@ Este repositorio contiene el código fuente y los materiales para el proyecto de
 
 Este repositorio contiene los códigos para [entrenar](Entrenamiento/entrenamiento.py) y [validar](validacion_sub-muestreo_imagenes.py) una red neuronal de regresión con una sola capa oculta de 16 perceptrones, con el fin de aplicarla para sub-muestrear espacialmente una imagen en formato .PNG. Además, se encuentran los códigos para la [generación del conjunto de datos](Entrenamiento/Dataset/) a partir de los recursos disponibles en [Common Objects in Context](https://cocodataset.org/#termsofuse) [1] (*Imágenes pertenecientes a [Flickr](https://www.flickr.com/creativecommons/) [2] con licencia [Creative Commons](https://creativecommons.org/licenses/by/4.0/legalcode) [3]*). También se encuentra un modelo pre-entrenado para cada canal de color o para escala de grises. El video y el artículo se pueden encontrar acá:
 
-Video: <>
-Artículo: <>
+Video: <https://youtu.be/UKJ1SvL7fE0>
+Artículo: <https://bit.ly/3lFahQ8>
 
 Tabla de Contenidos
 =================
